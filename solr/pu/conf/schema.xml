@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="pu" version="1.5">
+
+  <uniqueKey>id</uniqueKey>
+
+  <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="false"
+      indexed="true"
+      stored="true"
+      required="false"
+      multiValued="false" />
+
+  <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" />
+
+  <fieldType name="text_de" class="solr.TextField" positionIncrementGap="100" 
+      indexed="true"
+      stored="true"
+      required="false"
+      multiValued="true"
+      termVectors="true"
+      termPositions="true"
+      termOffsets="true">
+    <analyzer type="index">
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔*₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔*₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+    </analyzer>
+  </fieldType>
+
+  <field name="id" type="string" required="true" />
+  
+
+  <!-- transaction log -->
+  <field name="_version_" type="long" indexed="true" stored="true" />
+  <!-- enable nested documents -->
+  <field name="_root_" type="string" indexed="true" stored="false" />
+
+</schema>
