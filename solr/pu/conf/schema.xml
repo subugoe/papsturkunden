@@ -8,6 +8,11 @@
       stored="true"
       required="false"
       multiValued="false" />
+  <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"
+      indexed="true"
+      stored="true"
+      required="false"
+      multiValued="false" />
 
   <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" />
 
@@ -15,19 +20,24 @@
       indexed="true"
       stored="true"
       required="false"
-      multiValued="true"
+      multiValued="false"
       termVectors="true"
       termPositions="true"
       termOffsets="true">
     <analyzer type="index">
-      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔*₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
     </analyzer>
     <analyzer type="query">
-      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔*₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}\\¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
     </analyzer>
   </fieldType>
 
   <field name="id" type="string" required="true" />
+  
+  <field name="page" type="int" />
+  <field name="section" type="int" />
+  <field name="text" type="text_de" />
+  <field name="text_spaceless" type="text_de" />
   
 
   <!-- transaction log -->
