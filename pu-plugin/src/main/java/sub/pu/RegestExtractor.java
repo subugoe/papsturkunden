@@ -26,6 +26,7 @@ public class RegestExtractor {
 	public RegestExtractor() {
 		mappings.add("†:j");
 		mappings.add("1:l");
+		mappings.add("3:5");
 	}
 	
 	private void execute(String[] args) throws Exception {
@@ -49,7 +50,7 @@ public class RegestExtractor {
 		System.out.println("-------------");
 		String date = lineParts[1];
 		String pope = lineParts[2];
-		String regestNumber = lineParts[4];
+		String regestNumber = lineParts[4].replace("*", "\\*");
 		String page = lineParts[5];
 		
 		mapper = new UmlautWordMapper(mappings);
@@ -63,13 +64,14 @@ public class RegestExtractor {
 		
 		String wholeQuery = "page:" + page + " AND "
 				+ "("
-					+ "text_spaceless:" + regestNumberQueryWithStars + "^10 OR "
-					//+ "text:" + regestNumberQuery + " OR "
+					+ "text_spaceless:" + regestNumberQueryWithStars + "^50 OR "
+					+ "text:" + regestNumberQuery + " OR "
 					+ "text:" + dateFuzzyQuery + " OR "
 					+ "text:" + dateExactQuery + " OR "
 					+ "text_spaceless:*" + pope.split(" ")[0] + "*"
 				+ ")";
 		System.out.println(wholeQuery);
+		System.out.println("-------------");
 		
 		SolrQuery solrQuery = new SolrQuery(wholeQuery);
 		QueryResponse response = solr.query("pu", solrQuery);
