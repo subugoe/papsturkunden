@@ -1,4 +1,4 @@
-package sub.pu.api;
+package sub.pu.importing;
 
 import java.io.File;
 import java.io.InputStream;
@@ -20,17 +20,17 @@ public class ImporterStepConvert extends ImporterStep {
 		String solrXmlDir = params.get("solrXmlDir");
 		File outputDir = new File(solrXmlDir);
 		File inputDir = new File(gitDir);
-		File inputXml = new File(inputDir, "Germania_Pontificia_I_tikaout.xml");
+		File inputText = new File(inputDir, "out-pdftotext.txt");
 
 		fileAccess.cleanDir(outputDir);
-		out.println("    Converting XML to index file.");
+		out.println("    Converting text file to index XML file.");
 
-		InputStream xsltStream = ImporterStepConvert.class.getResourceAsStream("/indexer.xslt");
-		xslt.setXsltScript(xsltStream);
-		xslt.setErrorOut(out);
-
-		OutputStream fileOs = fileAccess.createOutputStream(outputDir, "solr-output.xml");
-		xslt.transform(inputXml.getAbsolutePath(), fileOs);
+//		InputStream xsltStream = ImporterStepConvert.class.getResourceAsStream("/indexer.xslt");
+//		xslt.setXsltScript(xsltStream);
+//		xslt.setErrorOut(out);
+//
+//		OutputStream fileOs = fileAccess.createOutputStream(outputDir, "solr-output.xml");
+//		xslt.transform(inputText.getAbsolutePath(), fileOs);
 
 	}
 
