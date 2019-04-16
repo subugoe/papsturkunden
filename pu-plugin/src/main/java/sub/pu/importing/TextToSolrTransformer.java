@@ -19,6 +19,7 @@ public class TextToSolrTransformer {
 		String first = reader.readLine();
 		String second = "";
 		
+		writer.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 		writer.println("<add>");
 		
 		while((second = reader.readLine()) != null) {
@@ -53,10 +54,16 @@ public class TextToSolrTransformer {
 		lineNumber++;
 		writer.println("  <field name=\"id\">" + lineNumber + "</field>");
 		writer.println("  <field name=\"page\">" + pageNumber + "</field>");
-		writer.println("  <field name=\"line\">" + first + "</field>");
-		writer.println("  <field name=\"next_line\">" + second.replaceAll("\\s", "") + "</field>");
+		writer.println("  <field name=\"line\"><![CDATA[" + removeReverseAlphabet(first) + "]]></field>");
+		writer.println("  <field name=\"next_line\"><![CDATA[" + second.replaceAll("\\s", "") + "]]></field>");
 		writer.println("</doc>");
 
 		writer.flush();
+	}
+
+	private String removeReverseAlphabet(String s) {
+		if (s != null)
+			s = s.replaceAll("zyx[a-wA-Z]*", "");
+		return s;
 	}
 }

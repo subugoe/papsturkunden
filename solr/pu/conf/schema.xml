@@ -35,9 +35,8 @@
   <field name="id" type="string" required="true" />
   
   <field name="page" type="int" />
-  <field name="section" type="int" />
-  <field name="text" type="text_de" />
-  <field name="text_spaceless" type="string" />
+  <field name="line" type="text_de" />
+  <field name="next_line" type="string" />
   
 
   <!-- transaction log -->

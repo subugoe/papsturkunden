@@ -1,17 +1,15 @@
 package sub.pu.importing;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
 import sub.ent.api.ImporterStep;
 import sub.ent.backend.FileAccess;
-import sub.ent.backend.Xslt;
 
 public class ImporterStepConvert extends ImporterStep {
 
-	private Xslt xslt = new Xslt();
+	private TextToSolrTransformer transformer = new TextToSolrTransformer();
 	private FileAccess fileAccess = new FileAccess();
 
 	@Override
@@ -25,13 +23,8 @@ public class ImporterStepConvert extends ImporterStep {
 		fileAccess.cleanDir(outputDir);
 		out.println("    Converting text file to index XML file.");
 
-//		InputStream xsltStream = ImporterStepConvert.class.getResourceAsStream("/indexer.xslt");
-//		xslt.setXsltScript(xsltStream);
-//		xslt.setErrorOut(out);
-//
-//		OutputStream fileOs = fileAccess.createOutputStream(outputDir, "solr-output.xml");
-//		xslt.transform(inputText.getAbsolutePath(), fileOs);
-
+		OutputStream fileOs = fileAccess.createOutputStream(outputDir, "solr-output.xml");
+		transformer.transform(inputText, fileOs);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package sub.pu.importing;
 
-import static org.junit.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
 import java.io.ByteArrayOutputStream;
@@ -76,6 +75,13 @@ public class TextToSolrTransformerTest {
 		assertXpathEvaluatesTo("-31", "//doc[1]/field[@name='page']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
 		assertXpathEvaluatesTo("-29", "//doc[2]/field[@name='page']", result);
+	}
+	
+	@Test
+	public void reverseAlphabetRubbish() throws Exception {
+		String result = transform("zyxRubbish.txt");
+		assertXpathEvaluatesTo("myline 1. End of line", "//doc[1]/field[@name='line']", result);
+		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
 	}
 	
 	//@Test
