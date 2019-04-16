@@ -26,6 +26,8 @@ public class TextToSolrTransformer {
 			if (countOfFormFeeds > 0) {
 				reader.readLine();
 				second = reader.readLine();
+				if (second == null)
+					break;
 			}
 
 			print(first, second, writer);
