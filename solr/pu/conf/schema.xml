@@ -36,6 +36,7 @@
   
   <field name="page" type="int" />
   <field name="line" type="text_de" />
+  <field name="line_spaceless" type="string" />
   <field name="next_line" type="string" />
   
 

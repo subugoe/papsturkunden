@@ -28,9 +28,9 @@ public class TextToSolrTransformerTest {
 	}
 
 	@Test
-	public void emptyFile_producesNullLine() throws Exception {
+	public void emptyFile_producesEmptyDocument() throws Exception {
 		String result = transform("empty.txt");
-		assertXpathEvaluatesTo("null", "//field[@name='line']", result);
+		assertXpathEvaluatesTo("0", "count(//field[@name='line'])", result);
 	}
 	
 	@Test
@@ -53,6 +53,7 @@ public class TextToSolrTransformerTest {
 		String result = transform("twoLines.txt");
 		assertXpathEvaluatesTo("1", "//doc[1]/field[@name='id']", result);
 		assertXpathEvaluatesTo("myline 1", "//doc[1]/field[@name='line']", result);
+		assertXpathEvaluatesTo("myline1", "//doc[1]/field[@name='line_spaceless']", result);
 		assertXpathEvaluatesTo("myline2", "//doc[1]/field[@name='next_line']", result);
 		assertXpathEvaluatesTo("2", "//doc[2]/field[@name='id']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
@@ -81,6 +82,7 @@ public class TextToSolrTransformerTest {
 	public void reverseAlphabetRubbish() throws Exception {
 		String result = transform("zyxRubbish.txt");
 		assertXpathEvaluatesTo("myline 1. End of line", "//doc[1]/field[@name='line']", result);
+		assertXpathEvaluatesTo("myline1.Endofline", "//doc[1]/field[@name='line_spaceless']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
 	}
 	

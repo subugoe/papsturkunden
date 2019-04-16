@@ -27,10 +27,8 @@ public class TextToSolrTransformer {
 			if (countOfFormFeeds > 0) {
 				reader.readLine();
 				second = reader.readLine();
-				if (second == null)
-					break;
 			}
-
+			
 			print(first, second, writer);
 			
 			if (countOfFormFeeds > 0) {
@@ -50,11 +48,17 @@ public class TextToSolrTransformer {
 	}
 	
 	private void print(String first, String second, PrintWriter writer) throws Exception {
+		if (first == null)
+			return;
+		if (second == null)
+			second = "";
+		
 		writer.println("<doc>");
 		lineNumber++;
 		writer.println("  <field name=\"id\">" + lineNumber + "</field>");
 		writer.println("  <field name=\"page\">" + pageNumber + "</field>");
 		writer.println("  <field name=\"line\"><![CDATA[" + removeReverseAlphabet(first) + "]]></field>");
+		writer.println("  <field name=\"line_spaceless\"><![CDATA[" + removeReverseAlphabet(first).replaceAll("\\s", "") + "]]></field>");
 		writer.println("  <field name=\"next_line\"><![CDATA[" + second.replaceAll("\\s", "") + "]]></field>");
 		writer.println("</doc>");
 
@@ -62,8 +66,6 @@ public class TextToSolrTransformer {
 	}
 
 	private String removeReverseAlphabet(String s) {
-		if (s != null)
-			s = s.replaceAll("zyx[a-wA-Z]*", "");
-		return s;
+		return s.replaceAll("zyx[a-wA-Z]*", "");
 	}
 }
