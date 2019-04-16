@@ -64,19 +64,21 @@ public class RegestExtractor {
 		
 		String wholeQuery = "page:" + page + " AND "
 				+ "("
-					+ "text_spaceless:" + regestNumberQueryWithStars + "^50 OR "
-					+ "text:" + regestNumberQuery + " OR "
-					+ "text:" + dateFuzzyQuery + " OR "
-					+ "text:" + dateExactQuery + " OR "
-					+ "text_spaceless:*" + pope.split(" ")[0] + "*"
+					+ "line_spaceless:" + regestNumberQueryWithStars + "^20 OR "
+					+ "line:" + regestNumberQuery + " OR "
+					+ "line:" + dateFuzzyQuery + " OR "
+					+ "line:" + dateExactQuery + " OR "
+					+ "next_line:*" + pope.split(" ")[0] + "*"
 				+ ")";
 		System.out.println(wholeQuery);
 		System.out.println("-------------");
 		
 		SolrQuery solrQuery = new SolrQuery(wholeQuery);
 		QueryResponse response = solr.query("pu", solrQuery);
-		String result = (String)response.getResults().get(0).getFieldValue("text");
-		System.out.println(result);
+		String resultLine = (String)response.getResults().get(0).getFieldValue("line");
+		String nextLine = (String)response.getResults().get(0).getFieldValue("next_line");
+		System.out.println(resultLine);
+		System.out.println(nextLine);
 	}
 	
 	private String generateOrQuery(List<String> combinations) {
