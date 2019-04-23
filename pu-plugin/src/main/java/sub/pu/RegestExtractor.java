@@ -35,6 +35,7 @@ public class RegestExtractor {
 		mappings.add("3:\\?");
 		mappings.add("5:•f");
 		mappings.add("6:€");
+		mappings.add("8:S");
 		
 		writer = new PrintWriter(new FileWriter("/home/dennis/papsturkunden/search-results.txt"));
 	}
@@ -70,6 +71,11 @@ public class RegestExtractor {
 		String regestNumber = lineParts[4].replace("*", "\\*");
 		String page = lineParts[5];
 		
+		if (lineParts[4].length() > 5 || page.length() > 3) {
+			results.add("00000: " + csvLine);
+			return;
+		}
+		
 		mapper = new UmlautWordMapper(mappings);
 
 		List<String> combinations = mapper.createMappings(regestNumber);
@@ -82,7 +88,7 @@ public class RegestExtractor {
 		
 		String wholeQuery = "page:" + page + " AND "
 				+ "("
-					+ "line_spaceless:" + regestNumberQueryWithStars + "^35 OR "
+					+ "line_spaceless:" + regestNumberQueryWithStars + "^40 OR "
 					+ "line:" + regestNumberQuery + "^5 OR "
 					+ "line:" + dateFuzzyQuery + "^3 OR "
 					+ "line:" + dateExactQuery + " OR "
