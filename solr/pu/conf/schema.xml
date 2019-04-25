@@ -32,7 +32,7 @@
     </analyzer>
   </fieldType>
 
-  <field name="id" type="string" required="true" />
+  <field name="id" type="int" required="true" />
   
   <field name="page" type="int" />
   <field name="line" type="text_de" />
@@ -43,6 +43,6 @@
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />
   <!-- enable nested documents -->
-  <field name="_root_" type="string" indexed="true" stored="false" />
+  <field name="_root_" type="int" indexed="true" stored="false" />
 
 </schema>
