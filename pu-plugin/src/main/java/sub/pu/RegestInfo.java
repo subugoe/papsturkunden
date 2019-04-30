@@ -5,5 +5,5 @@ public class RegestInfo {
 	public String number;
 	public String date;
 	public String pope;
-
+	public int tocIndex;
 }

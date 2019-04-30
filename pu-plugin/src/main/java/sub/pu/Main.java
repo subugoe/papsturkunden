@@ -22,10 +22,9 @@ public class Main {
 		RegestExtractor extractor = new RegestExtractor();
 		List<String> results = extractor.processLines(lines);
 		
-		Collections.sort(results);
+		//Collections.sort(results);
 		for (int i = 0; i < results.size(); i++) {
 			String res = results.get(i);
-			System.out.println(res + "    -- " + i);
 			writer.println(res);
 		}
 		writer.close();
