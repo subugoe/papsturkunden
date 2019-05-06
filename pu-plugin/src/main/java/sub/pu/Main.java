@@ -3,7 +3,6 @@ package sub.pu;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -20,12 +19,15 @@ public class Main {
 		String[] lines = file.split("\\n");
 		
 		RegestExtractor extractor = new RegestExtractor();
-		List<String> results = extractor.processLines(lines);
+		List<Regest> results = extractor.processLines(lines);
 		
-		//Collections.sort(results);
-		for (int i = 0; i < results.size(); i++) {
-			String res = results.get(i);
-			writer.println(res);
+		for (Regest regest : results) {
+			String lineNumber = regest.bookOrder + "";
+			for (int i = lineNumber.length(); i < 5; i++) {
+				lineNumber = "0" + lineNumber;
+			}
+
+			writer.println(lineNumber + ":   " + regest.textLines.get(0) + "     ------    " + regest.pope);
 		}
 		writer.close();
 	}

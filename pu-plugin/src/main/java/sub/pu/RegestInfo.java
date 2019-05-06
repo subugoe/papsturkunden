@@ -6,4 +6,6 @@ public class RegestInfo {
 	public String date;
 	public String pope;
 	public int tocIndex;
+	
+	public String csvLine;
 }
