@@ -9,9 +9,13 @@ public class RegestExtractor {
 	private List<Milestone> milestones = new ArrayList<>();
 	private SolrSearcher searcher = new SolrSearcher();
 	
-	public List<Regest> processLines(String[] csvLines) throws Exception {
+	public List<Regest> processLines(String[] csvLines, String[] endLines) throws Exception {
 		for (int i = 1; i < csvLines.length; i++) {
-			processLine(csvLines[i], i);
+			processCsvLine(csvLines[i], i);
+		}
+		
+		for (String endLine : endLines) {
+			processEndLine(endLine);
 		}
 
 		Collections.sort(milestones, new Milestone.BookOrderComparator());
@@ -19,6 +23,14 @@ public class RegestExtractor {
 		
 		List<Regest> regests = new ArrayList<>();
 		for (Milestone m : milestones) {
+			
+			if (!m.isRegestBeginning) {
+				Regest ending = new Regest();
+				ending.textLines.add(m.solrQuery);
+				ending.bookOrder = m.lineNumber;
+				regests.add(ending);
+				continue;
+			}
 			
 			Regest regest = new Regest();
 			regest.bookOrder = m.lineNumber;
@@ -31,7 +43,7 @@ public class RegestExtractor {
 		return regests;
 	}
 	
-	private void processLine(String csvLine, int tocIndex) throws Exception {
+	private void processCsvLine(String csvLine, int tocIndex) throws Exception {
 		String[] lineParts = csvLine.split(",");
 		if (lineParts.length < 6)
 			return;
@@ -50,6 +62,14 @@ public class RegestExtractor {
 		}
 		
 		Milestone result = searcher.findRegestBeginning(regestInfo);		
+		milestones.add(result);
+	}
+	
+	private void processEndLine(String endLine) throws Exception {
+		String page = endLine.substring(0, endLine.indexOf(','));
+		String textLine = endLine.substring(endLine.indexOf(',') + 1);
+		
+		Milestone result = searcher.findRegestEnding(page, textLine);
 		milestones.add(result);
 	}
 

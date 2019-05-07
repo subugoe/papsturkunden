@@ -30,4 +30,18 @@ public class SolrSearcher {
 		
 		return milestone;
 	}
+	
+	public Milestone findRegestEnding(String page, String textLine) throws Exception {
+		String query = "page:" + page + " AND line_spaceless:\"" + textLine.replaceAll("\\s", "") + "\"";
+		SolrQuery solrQuery = new SolrQuery(query);
+		QueryResponse response = solr.query("pu", solrQuery);
+		int lineNumber = (int)response.getResults().get(0).getFieldValue("id");
+
+		Milestone milestone = new Milestone();
+		milestone.isRegestBeginning = false;
+		milestone.lineNumber = lineNumber;
+		milestone.solrQuery = query;
+
+		return milestone;
+	}
 }
