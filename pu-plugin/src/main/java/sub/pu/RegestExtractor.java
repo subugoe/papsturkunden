@@ -22,22 +22,21 @@ public class RegestExtractor {
 		removeDoubles();
 		
 		List<Regest> regests = new ArrayList<>();
-		for (Milestone m : milestones) {
+		Milestone beginningM = milestones.get(0);
+		Milestone endingM = null;
+		RegestCreator regCreator = new RegestCreator();
+		for (int i = 1; i < milestones.size(); i++) {
+			endingM = milestones.get(i);
 			
-			if (!m.isRegestBeginning) {
-				Regest ending = new Regest();
-				ending.textLines.add(m.solrQuery);
-				ending.bookOrder = m.lineNumber;
-				regests.add(ending);
-				continue;
-			}
-			
-			Regest regest = new Regest();
-			regest.bookOrder = m.lineNumber;
-			regest.textLines.add(m.lineContents);
-			regest.pope = m.regestInfo.pope;
-			
+			Regest regest = regCreator.makeFromMilestones(beginningM, endingM);
 			regests.add(regest);
+			
+			if (endingM.isRegestBeginning) {
+				beginningM = endingM;
+			} else if (i < milestones.size() - 1){
+				beginningM = milestones.get(i + 1);
+				i++;
+			}			
 		}
 		
 		return regests;
