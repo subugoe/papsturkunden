@@ -16,6 +16,7 @@
       <str name="echoParams">all</str>
       <str name="defType">edismax</str>
       <str name="df">text</str>
+      <str name="rows">300</str>
       <str name="hl.simple.pre"><![CDATA[<span class="highlight">]]></str>
       <str name="hl.simple.post"><![CDATA[</span>]]></str>
     </lst>

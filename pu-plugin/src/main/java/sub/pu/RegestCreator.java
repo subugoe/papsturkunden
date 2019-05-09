@@ -2,12 +2,21 @@ package sub.pu;
 
 public class RegestCreator {
 
-	public Regest makeFromMilestones(Milestone starting, Milestone ending) {
+	public Regest makeFromMilestones(Milestone starting, Milestone ending) throws Exception {
+		
+		SolrSearcher searcher = new SolrSearcher();
 		
 		Regest regest = new Regest();
-		regest.bookOrder = starting.lineNumber;
-		regest.textLines.add(starting.lineContents);
 		regest.pope = starting.regestInfo.pope;
+		regest.date = starting.regestInfo.date;
+		regest.number = starting.regestInfo.number.replace("\\", "");
+		regest.page = starting.regestInfo.page;
+		regest.bookOrder = starting.lineNumber;
+		regest.pope = starting.regestInfo.pope;
+		regest.fromLine = starting.lineNumber;
+		regest.toLine = ending.lineNumber;
+		
+		regest.textLines = searcher.cutOutRegestText(starting.lineNumber, ending.lineNumber);
 		
 		return regest;
 	}

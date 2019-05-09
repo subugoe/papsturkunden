@@ -1,9 +1,13 @@
 package sub.pu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 
 public class SolrSearcher {
 
@@ -43,5 +47,19 @@ public class SolrSearcher {
 		milestone.solrQuery = query;
 
 		return milestone;
+	}
+	
+	public List<String> cutOutRegestText(int fromLine, int toLine) throws Exception {
+		String query = "id:[" + fromLine + " TO " + toLine + "}";
+		SolrQuery solrQuery = new SolrQuery(query);
+		QueryResponse response = solr.query("pu", solrQuery);
+		SolrDocumentList solrResults = response.getResults();
+		List<String> results = new ArrayList<>();
+		for (int i = 0; i < solrResults.getNumFound(); i++) {
+			String line = (String)solrResults.get(i).getFieldValue("line");
+			results.add(line);
+		}
+
+		return results;
 	}
 }
