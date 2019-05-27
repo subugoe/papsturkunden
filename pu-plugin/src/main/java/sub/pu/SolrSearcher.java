@@ -12,19 +12,20 @@ import org.apache.solr.common.SolrDocumentList;
 public class SolrSearcher {
 
 	private SolrClient solr;
+	private String solrUrl = "http://localhost:8983/solr";
+	private String solrCore = "pu";
 
 	public SolrSearcher() {
-		solr = new HttpSolrClient.Builder("http://localhost:8983/solr").build();
+		solr = new HttpSolrClient.Builder(solrUrl).build();
 	}
 	
 	public Milestone findRegestBeginning(RegestInfo regestInfo) throws Exception {
 		String wholeQuery = new QueryGenerator().generateQuery(regestInfo);
+		SolrDocumentList results = askSolr(wholeQuery);
 		
-		SolrQuery solrQuery = new SolrQuery(wholeQuery);
-		QueryResponse response = solr.query("pu", solrQuery);
-		String resultLine = (String)response.getResults().get(0).getFieldValue("line");
+		String resultLine = (String)results.get(0).getFieldValue("line");
 		
-		int lineNumber = (int)response.getResults().get(0).getFieldValue("id");
+		int lineNumber = (int)results.get(0).getFieldValue("id");
 
 		Milestone milestone = new Milestone();
 		milestone.lineNumber = lineNumber;
@@ -35,11 +36,16 @@ public class SolrSearcher {
 		return milestone;
 	}
 	
+	private SolrDocumentList askSolr(String query) throws Exception {
+		SolrQuery solrQuery = new SolrQuery(query);
+		QueryResponse response = solr.query(solrCore, solrQuery);
+		return response.getResults();
+	}
+	
 	public Milestone findRegestEnding(String page, String textLine) throws Exception {
 		String query = "page:" + page + " AND line_spaceless:\"" + textLine.replaceAll("\\s", "") + "\"";
-		SolrQuery solrQuery = new SolrQuery(query);
-		QueryResponse response = solr.query("pu", solrQuery);
-		int lineNumber = (int)response.getResults().get(0).getFieldValue("id");
+		SolrDocumentList results = askSolr(query);
+		int lineNumber = (int)results.get(0).getFieldValue("id");
 
 		Milestone milestone = new Milestone();
 		milestone.isRegestBeginning = false;
@@ -51,15 +57,13 @@ public class SolrSearcher {
 	
 	public List<String> cutOutRegestText(int fromLine, int toLine) throws Exception {
 		String query = "id:[" + fromLine + " TO " + toLine + "}";
-		SolrQuery solrQuery = new SolrQuery(query);
-		QueryResponse response = solr.query("pu", solrQuery);
-		SolrDocumentList solrResults = response.getResults();
-		List<String> results = new ArrayList<>();
+		SolrDocumentList solrResults = askSolr(query);
+		List<String> listResults = new ArrayList<>();
 		for (int i = 0; i < solrResults.getNumFound(); i++) {
 			String line = (String)solrResults.get(i).getFieldValue("line");
-			results.add(line);
+			listResults.add(line);
 		}
 
-		return results;
+		return listResults;
 	}
 }

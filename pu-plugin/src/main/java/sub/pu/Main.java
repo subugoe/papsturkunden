@@ -29,17 +29,17 @@ public class Main {
 				lineNumber = "0" + lineNumber;
 			}
 
-			//writer.println(lineNumber + ":   " + regest.textLines.get(0) + "     ------    " + regest.pope);
+			writer.println(lineNumber + ":   " + regest.textLines.get(0) + "     ------    " + regest.pope);
 
-			writer.println("Seite: " + regest.page);
-			writer.println("Regestnummer: " + regest.number);
-			writer.println("Datum: " + regest.date);
-			writer.println("Papst: " + regest.pope);
-			writer.println();
-			for (String textLine : regest.textLines) {
-				writer.println(textLine);
-			}
-			writer.println("-------------------------------------------------------------------------------------");
+//			writer.println("Seite: " + regest.page);
+//			writer.println("Regestnummer: " + regest.number);
+//			writer.println("Datum: " + regest.date);
+//			writer.println("Papst: " + regest.pope);
+//			writer.println();
+//			for (String textLine : regest.textLines) {
+//				writer.println(textLine);
+//			}
+//			writer.println("-------------------------------------------------------------------------------------");
 		}
 		writer.close();
 	}
