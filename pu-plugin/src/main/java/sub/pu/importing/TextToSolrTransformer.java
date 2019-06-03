@@ -11,6 +11,7 @@ public class TextToSolrTransformer {
 	
 	private int lineNumber = 0;
 	private int pageNumber = -31;
+	private String bookName = "Germ. Pont. I";
 	
 	public void transform(File inputFile, OutputStream outStream) throws Exception {
 		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -56,6 +57,7 @@ public class TextToSolrTransformer {
 		writer.println("<doc>");
 		lineNumber++;
 		writer.println("  <field name=\"id\">" + lineNumber + "</field>");
+		writer.println("  <field name=\"book\">" + bookName + "</field>");
 		writer.println("  <field name=\"page\">" + pageNumber + "</field>");
 		writer.println("  <field name=\"line\"><![CDATA[" + removeReverseAlphabet(first) + "]]></field>");
 		writer.println("  <field name=\"line_spaceless\"><![CDATA[" + removeReverseAlphabet(first).replaceAll("\\s", "") + "]]></field>");

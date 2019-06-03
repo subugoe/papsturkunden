@@ -9,6 +9,7 @@ public class Regest {
 	public int bookOrder;
 	public int tocOrder;
 	
+	public String bookName;
 	public String pope;
 	public String date;
 	public String number;

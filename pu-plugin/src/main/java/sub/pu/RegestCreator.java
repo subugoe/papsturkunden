@@ -7,6 +7,7 @@ public class RegestCreator {
 		SolrSearcher searcher = new SolrSearcher();
 		
 		Regest regest = new Regest();
+		regest.bookName = starting.bookName;
 		regest.pope = starting.regestInfo.pope;
 		regest.date = starting.regestInfo.date;
 		regest.number = starting.regestInfo.number.replace("\\", "");
