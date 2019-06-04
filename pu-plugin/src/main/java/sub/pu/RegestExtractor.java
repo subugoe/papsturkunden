@@ -53,8 +53,13 @@ public class RegestExtractor {
 	
 	private void processCsvLine(String csvLine, int tocIndex) throws Exception {
 		String[] lineParts = csvLine.split(",");
-		if (lineParts.length < 6)
+		if (lineParts.length < 7) {
 			return;
+		}
+		if (lineParts[4].length() > 5 || lineParts[5].length() > 3) {
+			System.out.println("Bad syntax: " + csvLine);
+			return;
+		}
 		
 		RegestInfo regestInfo = new RegestInfo();
 		regestInfo.date = lineParts[1];
@@ -63,10 +68,8 @@ public class RegestExtractor {
 		regestInfo.page = lineParts[5];
 		regestInfo.tocIndex = tocIndex;
 		regestInfo.csvLine = csvLine;
-		
-		if (lineParts[4].length() > 5 || regestInfo.page.length() > 3) {
-			System.out.println("Bad syntax: " + csvLine);
-			return;
+		if ("R".equals(lineParts[6])) {
+			regestInfo.popeIsAlsoPontifikat = true;
 		}
 		
 		Milestone beginningM = searcher.findRegestBeginning(regestInfo);		

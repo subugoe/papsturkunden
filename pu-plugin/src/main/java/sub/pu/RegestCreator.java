@@ -9,6 +9,7 @@ public class RegestCreator {
 		Regest regest = new Regest();
 		regest.bookName = starting.bookName;
 		regest.pope = starting.regestInfo.pope;
+		regest.popeIsAlsoPontifikat = starting.regestInfo.popeIsAlsoPontifikat;
 		regest.date = starting.regestInfo.date;
 		regest.number = starting.regestInfo.number.replace("\\", "");
 		regest.page = starting.regestInfo.page;

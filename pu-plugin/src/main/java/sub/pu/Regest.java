@@ -14,6 +14,7 @@ public class Regest {
 	public String date;
 	public String number;
 	public String page;
+	public boolean popeIsAlsoPontifikat;
 	
 	public String queryForDebugging;
 	public int fromLine;
