@@ -1,6 +1,7 @@
 package sub.pu;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class XmlRegestWriter {
@@ -43,6 +44,60 @@ public class XmlRegestWriter {
 			String line = regest.textLines.get(1);
 			return "== " + line;
 		}
+	}
+	
+//	String combineWhitespacedWords(String line) {
+//		String result = line.replaceAll("(([^a-z]|^)[a-z]) ([a-z]([^a-z]|$))", "$1" + "x" + "$3");
+//		//result = result.replaceAll("(x[a-z]) ([a-z]x?)", "$1" + "x" + "$2");
+//		return result;
+//		//return result.replace("x", "");
+//	}
+	
+	String combineWhitespacedWords(String line) {
+		List<Integer> lonelyLetterIndexes = new ArrayList<>();
+		for (int i = 0; i < line.length(); i++) {
+			if (isLonelyLetter(i, line)) {
+				lonelyLetterIndexes.add(i);
+			}
+		}
+		for (int i = lonelyLetterIndexes.size() - 1; i > 0; i--) {
+			int current = lonelyLetterIndexes.get(i);
+			int preceding = lonelyLetterIndexes.get(i - 1);
+			if (current - preceding == 2) {
+				line = removeCharacterFromLine(current - 1, line);
+			}
+		}
+		System.out.println(lonelyLetterIndexes);
+		return line;
+	}
+
+	private String removeCharacterFromLine(int i, String line) {
+		StringBuilder sb = new StringBuilder(line);
+		sb.deleteCharAt(i);
+		return sb.toString();
+	}
+
+	private boolean isLonelyLetter(int i, String line) {
+		String current = line.charAt(i) + "";
+		if (current.matches("[a-z]")) {
+			boolean openToRight = line.length() > i + 1;
+			boolean openToLeft = i > 0;
+			if (openToRight && openToLeft) {
+				if (isWhitespace(i - 1, line) && isWhitespace(i + 1, line)) {
+					return true;
+				}
+			} else if (openToRight && isWhitespace(i + 1, line)) {
+				return true;
+			} else if (openToLeft && isWhitespace(i - 1, line)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean isWhitespace(int index, String line) {
+		return ("" + line.charAt(index)).matches(" ");
 	}
 
 }
