@@ -19,8 +19,12 @@ public class XmlRegestWriter {
 			out.println("  <idno>" + regest.bookName + ", S. " + regest.page + " n. " + extractDigits(regest.number) + "</idno>");
 			out.println("  <pont_bd>" + regest.bookName + "</pont_bd>");
 			out.println("  <pont_no>" + regest.page + " n. " + extractDigits(regest.number) + "</pont_no>");
+			if (!regest.popeIsAlsoPontifikat) {
+				out.println("  <!--ZEILE1: " + regest.textLines.get(1) + "-->");
+			}
 			out.println("  <supplier>" + getPopeAndSupplier(regest) + "</supplier>");
-			out.println("  <date_table></date_table>");
+			out.println("  <!--HEADER: " + regest.textLines.get(0).trim() + "-->");
+			out.println("  <date_table>" + getPlaceAndDate(regest) + "</date_table>");
 			out.println("  <initium></initium>");
 			out.println("  <recepit_inst></recepit_inst>");
 			out.println("  <diocese></diocese>");
@@ -33,6 +37,14 @@ public class XmlRegestWriter {
 		out.println("</body>");
 	}
 	
+	private String getPlaceAndDate(Regest regest) {
+		String headerLine = regest.textLines.get(0).trim();
+		if (headerLine.length() > 5) {
+			return headerLine.substring(5).replaceAll("\\s+", " ").trim();
+		}
+		return "";
+	}
+
 	private String extractDigits(String regestNumber) {
 		return regestNumber.replaceAll("[†*]", "");
 	}
@@ -48,7 +60,7 @@ public class XmlRegestWriter {
 //			System.out.println(line);
 //			System.out.println(regest.textLines.get(2));
 //			System.out.println();
-			return regest.pope + " (" + parseSupplier(line) + ") <!--" + regest.textLines.get(1) + "-->";
+			return parseSupplier(line) + " (" + regest.pope + ")";
 		}
 	}
 	
