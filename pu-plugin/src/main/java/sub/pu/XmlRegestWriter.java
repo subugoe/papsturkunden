@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import sub.pu.util.Regex;
+
 public class XmlRegestWriter {
 	
 	private DateBuilder dateBuilder = new DateBuilder();
@@ -25,7 +27,7 @@ public class XmlRegestWriter {
 			out.println("  <supplier>" + getPopeAndSupplier(regest) + "</supplier>");
 			out.println("  <!--HEADER: " + regest.textLines.get(0).trim() + "-->");
 			out.println("  <date_table>" + getPlaceAndDate(regest) + "</date_table>");
-			out.println("  <initium></initium>");
+			out.println("  <initium>" + getInitium(regest) + "</initium>");
 			out.println("  <recepit_inst></recepit_inst>");
 			out.println("  <diocese></diocese>");
 			out.println("  <jaffe2></jaffe2>");
@@ -45,6 +47,19 @@ public class XmlRegestWriter {
 		return "";
 	}
 
+	private String getInitium(Regest regest) {
+		String oneLineRegest = "";
+		for (int i = 1; i < regest.textLines.size(); i++) {
+			oneLineRegest += regest.textLines.get(i) + " ";
+		}
+		String possibleInitium = Regex.extractFirst(" —([^\\.]+).", oneLineRegest).trim();
+		if (possibleInitium.length() > 4) {
+			return possibleInitium;
+		} else {
+			return "";
+		}
+	}
+	
 	private String extractDigits(String regestNumber) {
 		return regestNumber.replaceAll("[†*]", "");
 	}
