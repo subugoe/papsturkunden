@@ -1,14 +1,11 @@
 package sub.pu;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import sub.pu.util.Regex;
 
 public class DateBuilder {
 
 	public String getYear(String date) {
-		return extractUsingRegex("([0-9]{3,4})", date).get(0);
+		return Regex.extractFirst("([0-9]{3,4})", date);
 	}
 
 	public String getDate(String date) {
@@ -16,7 +13,7 @@ public class DateBuilder {
 	}
 	
 	private String getMonth(String date) {
-		for (String monthName : extractUsingRegex("([a-z]{3,5})", date)) {
+		for (String monthName : Regex.extractAll("([a-z]{3,5})", date)) {
 			switch (monthName) {
 			case "ian":
 				return "01";
@@ -48,7 +45,7 @@ public class DateBuilder {
 	}
 
 	private String getDay(String date) {
-		String day = extractUsingRegex("[ \\.]([123]?[0-9])($|[^0-9])", date).get(0);
+		String day = Regex.extractFirst("[ \\.]([123]?[0-9])($|[^0-9])", date);
 		switch (day.length()) {
 		case 1:
 			return "0" + day;
@@ -59,18 +56,4 @@ public class DateBuilder {
 		}
 	}
 	
-	private List<String> extractUsingRegex(String regex, String s) {
-		List<String> results = new ArrayList<String>();
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(s);
-		while (matcher.find()) {
-			results.add(matcher.group(1));
-		}
-
-		if (results.isEmpty()) {
-			results.add("");
-		}
-		return results;
-	}
-
 }
