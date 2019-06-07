@@ -42,21 +42,20 @@ public class XmlRegestWriter {
 			return regest.pope + " (" + regest.pope + ")";
 		} else {
 			String line = regest.textLines.get(1);
-			return "== " + line;
+			line = combineWhitespacedWords(line, "[IVX]");
+			line = combineWhitespacedWords(line, "[()\\[\\]a-zA-Z]");
+						
+//			System.out.println(line);
+//			System.out.println(regest.textLines.get(2));
+//			System.out.println();
+			return regest.pope + " (" + parseSupplier(line) + ") <!--" + regest.textLines.get(1) + "-->";
 		}
 	}
 	
-//	String combineWhitespacedWords(String line) {
-//		String result = line.replaceAll("(([^a-z]|^)[a-z]) ([a-z]([^a-z]|$))", "$1" + "x" + "$3");
-//		//result = result.replaceAll("(x[a-z]) ([a-z]x?)", "$1" + "x" + "$2");
-//		return result;
-//		//return result.replace("x", "");
-//	}
-	
-	String combineWhitespacedWords(String line) {
+	String combineWhitespacedWords(String line, String filterRegex) {
 		List<Integer> lonelyLetterIndexes = new ArrayList<>();
 		for (int i = 0; i < line.length(); i++) {
-			if (isLonelyLetter(i, line)) {
+			if (isLonelyLetter(i, line, filterRegex)) {
 				lonelyLetterIndexes.add(i);
 			}
 		}
@@ -67,7 +66,6 @@ public class XmlRegestWriter {
 				line = removeCharacterFromLine(current - 1, line);
 			}
 		}
-		System.out.println(lonelyLetterIndexes);
 		return line;
 	}
 
@@ -77,9 +75,9 @@ public class XmlRegestWriter {
 		return sb.toString();
 	}
 
-	private boolean isLonelyLetter(int i, String line) {
+	private boolean isLonelyLetter(int i, String line, String filterRegex) {
 		String current = line.charAt(i) + "";
-		if (current.matches("[a-z]")) {
+		if (current.matches(filterRegex)) {
 			boolean openToRight = line.length() > i + 1;
 			boolean openToLeft = i > 0;
 			if (openToRight && openToLeft) {
@@ -98,6 +96,26 @@ public class XmlRegestWriter {
 
 	private boolean isWhitespace(int index, String line) {
 		return ("" + line.charAt(index)).matches(" ");
+	}
+	
+	String parseSupplier(String line) {
+		String[] words = line.split("\\s+");
+		String supplier = "";
+		if (words.length > 3) {
+			if (!words[2].matches("[IVX]+")) {
+				supplier += words[2];
+			}
+			for (int i = 3; i < words.length; i++) {
+				String current = words[i];
+				if (current.endsWith(":")) {
+					supplier += " " + current.substring(0, current.length() - 1);
+					break;
+				}
+				supplier += " " + current;
+			}
+		}
+
+		return supplier;
 	}
 
 }
