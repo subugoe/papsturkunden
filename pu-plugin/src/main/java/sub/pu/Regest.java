@@ -16,6 +16,9 @@ public class Regest {
 	public String page;
 	public boolean popeIsAlsoPontifikat;
 	
+	public String chapter = "";
+	public String subchapter = "";
+	
 	public String queryForDebugging;
 	public int fromLine;
 	public int toLine;

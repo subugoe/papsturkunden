@@ -21,8 +21,14 @@ public class Main {
 		String endMilestonesFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/end-milestones.txt"), "UTF8");
 		String[] endLines = endMilestonesFile.split("\\n");
 		
+		String chapterFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/Germania_Pontificia_I_bearb.csv"), "UTF8");
+		String[] chapterLines = chapterFile.split("\\n");
+		
 		RegestExtractor extractor = new RegestExtractor();
 		List<Regest> regests = extractor.processLines(tocLines, endLines);
+		
+		RegestEnricher enricher = new RegestEnricher();
+		//enricher.addChapters(regests, chapterLines);
 		
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
 		regestWriter.write(regests, writerForXml);
