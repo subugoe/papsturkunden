@@ -28,7 +28,7 @@ public class Main {
 		List<Regest> regests = extractor.processLines(tocLines, endLines);
 		
 		RegestEnricher enricher = new RegestEnricher();
-		//enricher.addChapters(regests, chapterLines);
+		enricher.addChapters(regests, chapterLines);
 		
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
 		regestWriter.write(regests, writerForXml);

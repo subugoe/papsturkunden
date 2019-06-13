@@ -16,20 +16,20 @@ public class XmlRegestWriter {
 		
 		for (Regest regest : regests) {
 			out.println("<text type=\"charter\">");
-			out.println("  <!-- " + regest.date + " -->");
+			//out.println("  <!-- " + regest.date + " -->");
 			out.println("  <date_sort value=\"" + dateBuilder.getDate(regest.date) + "\">" + dateBuilder.getYear(regest.date) + "</date_sort>");
 			out.println("  <idno>" + regest.bookName + ", S. " + regest.page + " n. " + extractDigits(regest.number) + "</idno>");
 			out.println("  <pont_bd>" + regest.bookName + "</pont_bd>");
 			out.println("  <pont_no>" + regest.page + " n. " + extractDigits(regest.number) + "</pont_no>");
 			if (!regest.popeIsAlsoPontifikat) {
-				out.println("  <!--ZEILE1: " + regest.textLines.get(1) + "-->");
+				//out.println("  <!--ZEILE1: " + regest.textLines.get(1) + "-->");
 			}
 			out.println("  <supplier>" + getPopeAndSupplier(regest) + "</supplier>");
-			out.println("  <!--HEADER: " + regest.textLines.get(0).trim() + "-->");
+			//out.println("  <!--HEADER: " + regest.textLines.get(0).trim() + "-->");
 			out.println("  <date_table>" + getPlaceAndDate(regest) + "</date_table>");
 			out.println("  <initium>" + getInitium(regest) + "</initium>");
-			out.println("  <recepit_inst></recepit_inst>");
-			out.println("  <diocese></diocese>");
+			out.println("  <recepit_inst>" + regest.subchapter + "</recepit_inst>");
+			out.println("  <diocese>" + regest.chapter + "</diocese>");
 			out.println("  <jaffe2></jaffe2>");
 			out.println("  <regimp></regimp>");
 			out.println("  <doc_regest></doc_regest>");

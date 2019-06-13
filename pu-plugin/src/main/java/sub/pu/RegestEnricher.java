@@ -1,44 +1,72 @@
 package sub.pu;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RegestEnricher {
 
+	private Map<Integer, String[]> chapterMap = new HashMap<>();
+
 	public void addChapters(List<Regest> regests, String[] chapterLines) {
+		addInfosToChapterMap(chapterLines, maxRegestPage(regests));
 		for (Regest regest : regests) {
-			addChaptersToRegest(regest, chapterLines);
+			addChaptersToRegest(regest);
 		}
 	}
 
-	void addChaptersToRegest(Regest regest, String[] chapterLines) {
-		Map<String, String[]> chapterMap = convert(chapterLines);
-	}
-
-	private Map<String, String[]> convert(String[] chapterLines) {
-		Map<String, String[]> chapterMap = new HashMap<>();
-		
+	private void addInfosToChapterMap(String[] chapterLines, int maxPage) {
 		String currentChapter = "";
+		boolean chapterChanged = false;
+		String changedChapter = "";
 		String currentSubchapter = "";
-		String currentPage = "";
+		int currentPage = 1;
 		
 		for (String line : chapterLines) {
 			String[] lineFields = line.split(";");
-			if (lineFields.length == 0) { 
+			if (lineFields.length == 0 || lineFields.length == 2) { 
 				continue;
 			} else if (lineFields.length == 1) {
-				currentChapter = lineFields[0];
-				currentSubchapter = "";
+				chapterChanged = true;
+				changedChapter = lineFields[0];
 			} else if (lineFields.length == 3) {
-				
+				int pageFrom = currentPage;
+				int pageTo = Integer.parseInt(lineFields[2]);
+				addToChapterMap(pageFrom, pageTo, currentChapter, currentSubchapter);
+				currentSubchapter = lineFields[1];
+				currentPage = pageTo;
+				if (chapterChanged) {
+					chapterChanged = false;
+					currentChapter = changedChapter;
+				}
 			} else {
-				throw new RuntimeException("Error in line: " + line);
+				throw new RuntimeException("Error in line (length " + lineFields.length + "): " + line);
 			}
-			System.out.println("- " + lineFields[0]);
 		}
-		
-		return chapterMap;
+		addToChapterMap(currentPage, maxPage + 1, currentChapter, currentSubchapter);
+	}
+
+	private int maxRegestPage(List<Regest> regests) {
+		List<Integer> allPages = new ArrayList<>();
+		for (Regest regest : regests) {
+			Integer page = Integer.valueOf(regest.page);
+			allPages.add(page);
+		}
+		return Collections.max(allPages);
+	}
+
+	private void addToChapterMap(int pageFrom, int pageTo, String currentChapter, String currentSubchapter) {
+		for (int i = pageFrom; i < pageTo; i++) {
+			chapterMap.put(i, new String[] {currentChapter, currentSubchapter});
+		}
+	}
+
+	private void addChaptersToRegest(Regest regest) {
+		Integer regestPage = Integer.valueOf(regest.page);
+		regest.chapter = chapterMap.get(regestPage)[0];
+		regest.subchapter = chapterMap.get(regestPage)[1];
 	}
 
 }
