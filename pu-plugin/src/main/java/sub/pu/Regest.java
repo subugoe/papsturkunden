@@ -18,8 +18,10 @@ public class Regest {
 	
 	public String chapter = "";
 	public String subchapter = "";
+	public String jaffe = "";
 	
 	public String queryForDebugging;
 	public int fromLine;
 	public int toLine;
+	public String csvLine;
 }

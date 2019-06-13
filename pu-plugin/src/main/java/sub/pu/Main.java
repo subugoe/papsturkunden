@@ -24,11 +24,15 @@ public class Main {
 		String chapterFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/Germania_Pontificia_I_bearb.csv"), "UTF8");
 		String[] chapterLines = chapterFile.split("\\n");
 		
+		String jaffeFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/ListeJL_GP1_2.csv"), "UTF8");
+		String[] jaffeLines = jaffeFile.split("\\n");
+		
 		RegestExtractor extractor = new RegestExtractor();
 		List<Regest> regests = extractor.processLines(tocLines, endLines);
 		
 		RegestEnricher enricher = new RegestEnricher();
 		enricher.addChapters(regests, chapterLines);
+		enricher.addJaffes(regests, jaffeLines);
 		
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
 		regestWriter.write(regests, writerForXml);

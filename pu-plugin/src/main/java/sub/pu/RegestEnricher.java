@@ -69,4 +69,20 @@ public class RegestEnricher {
 		regest.subchapter = chapterMap.get(regestPage)[1];
 	}
 
+	public void addJaffes(List<Regest> regests, String[] jaffeLines) {
+		Map<String, String> jaffeMap = new HashMap<>();
+		for (String line : jaffeLines) {
+			String[] lineFields = line.split(",");
+			if (lineFields.length == 2 && !"".equals(lineFields[0])) {
+				jaffeMap.put(lineFields[0], lineFields[1]);
+			}
+		}
+		for (Regest regest : regests) {
+			if (regest.csvLine.endsWith("R")) {
+				String keyNumber = regest.csvLine.split(",")[0];
+				regest.jaffe = jaffeMap.get(keyNumber);
+			}
+		}
+	}
+
 }

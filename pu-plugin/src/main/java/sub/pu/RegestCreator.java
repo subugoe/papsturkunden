@@ -17,6 +17,7 @@ public class RegestCreator {
 		regest.pope = starting.regestInfo.pope;
 		regest.fromLine = starting.lineNumber;
 		regest.toLine = ending.lineNumber;
+		regest.csvLine = starting.regestInfo.csvLine;
 		
 		regest.textLines = searcher.cutOutRegestText(starting.lineNumber, ending.lineNumber);
 		
