@@ -25,10 +25,10 @@
       termPositions="true"
       termOffsets="true">
     <analyzer type="index">
-      <tokenizer class="solr.PatternTokenizerFactory" pattern="[\(\)—‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[-\(\)—‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
     </analyzer>
     <analyzer type="query">
-      <tokenizer class="solr.PatternTokenizerFactory" pattern="[\(\)—‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
+      <tokenizer class="solr.PatternTokenizerFactory" pattern="[-\(\)—‒&amp;&lt;&gt;&quot;&apos;\p{Z}\s′`″”∣%«»‛\$⅓⅙⅔·⅕#˄˚\{\}¼¾©@‚°=½§…℔₰¶⸗˺˹„“+–\/?!;›‹\.,’·‘:]+" />
     </analyzer>
   </fieldType>
 

@@ -64,18 +64,18 @@ public class TextToSolrTransformerTest {
 	public void twoLinesWithPageBreak() throws Exception {
 		String result = transform("twoLines_withPageBreak.txt");
 		assertXpathEvaluatesTo("myline 1", "//doc[1]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-31", "//doc[1]/field[@name='page']", result);
+		assertXpathEvaluatesTo("-22", "//doc[1]/field[@name='page']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-30", "//doc[2]/field[@name='page']", result);
+		assertXpathEvaluatesTo("-21", "//doc[2]/field[@name='page']", result);
 	}
 
 	@Test
 	public void twoFormFeeds_skipsOnePage() throws Exception {
 		String result = transform("twoFormFeeds.txt");
 		assertXpathEvaluatesTo("myline 1", "//doc[1]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-31", "//doc[1]/field[@name='page']", result);
+		assertXpathEvaluatesTo("-22", "//doc[1]/field[@name='page']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-29", "//doc[2]/field[@name='page']", result);
+		assertXpathEvaluatesTo("-20", "//doc[2]/field[@name='page']", result);
 	}
 	
 	@Test

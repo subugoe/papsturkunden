@@ -33,8 +33,8 @@ public class XmlRegestWriter {
 			out.println("  <diocese>" + regest.chapter + "</diocese>");
 			out.println("  <jaffe2>" + regest.jaffe +"</jaffe2>");
 			out.println("  <regimp></regimp>");
-			int pdfPage = Integer.parseInt(regest.page) + 32;
-			out.println("  <doc_regest name=\"Germania Pontificia I (nur OCR).pdf#page=" + pdfPage + "\">" + idno + "</doc_regest>");
+			int pdfPage = Integer.parseInt(regest.page) + 23;
+			out.println("  <doc_regest name=\"Germania Pontificia III (nur OCR).pdf#page=" + pdfPage + "\">" + idno + "</doc_regest>");
 			out.println("</text>");
 		}
 		

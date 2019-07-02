@@ -18,7 +18,7 @@ public class ImporterStepConvert extends ImporterStep {
 		String solrXmlDir = params.get("solrXmlDir");
 		File outputDir = new File(solrXmlDir);
 		File inputDir = new File(gitDir);
-		File inputText = new File(inputDir, "out-pdftotext.txt");
+		File inputText = new File(inputDir, "book.txt");
 
 		fileAccess.cleanDir(outputDir);
 		out.println("    Converting text file to index XML file.");

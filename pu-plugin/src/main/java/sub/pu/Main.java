@@ -14,17 +14,17 @@ public class Main {
 	}
 	
 	private void execute(String[] args) throws Exception {
-		PrintWriter writer = new PrintWriter(new FileWriter("/home/dennis/papsturkunden/search-results.txt"));
-		PrintWriter writerForXml = new PrintWriter(new FileWriter("/home/dennis/papsturkunden/germania1.xml"));
-		String tocCsvFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/ownClowd/Regesta_pontificum_Romanorum_Germania_Germ_I_Export.csv"), "UTF8");
+		PrintWriter writer = new PrintWriter(new FileWriter("/home/dennis/papsturkunden_germania3/search-results.txt"));
+		PrintWriter writerForXml = new PrintWriter(new FileWriter("/home/dennis/papsturkunden_germania3/germania3.xml"));
+		String tocCsvFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden_germania3/TOC.csv"), "UTF8");
 		String[] tocLines = tocCsvFile.split("\\n");
-		String endMilestonesFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/end-milestones.txt"), "UTF8");
+		String endMilestonesFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden_germania3/end-milestones.txt"), "UTF8");
 		String[] endLines = endMilestonesFile.split("\\n");
 		
-		String chapterFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/Germania_Pontificia_I_bearb.csv"), "UTF8");
+		String chapterFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden_germania3/chapters.csv"), "UTF8");
 		String[] chapterLines = chapterFile.split("\\n");
 		
-		String jaffeFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden/ListeJL_GP1_2.csv"), "UTF8");
+		String jaffeFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden_germania3/jaffe.csv"), "UTF8");
 		String[] jaffeLines = jaffeFile.split("\\n");
 		
 		RegestExtractor extractor = new RegestExtractor();

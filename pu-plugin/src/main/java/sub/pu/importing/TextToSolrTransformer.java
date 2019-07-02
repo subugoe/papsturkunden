@@ -10,8 +10,8 @@ import java.io.PrintWriter;
 public class TextToSolrTransformer {
 	
 	private int lineNumber = 0;
-	private int pageNumber = -31;
-	private String bookName = "Germ. Pont. I";
+	private int pageNumber = -22;
+	private String bookName = "Germ. Pont. III";
 	
 	public void transform(File inputFile, OutputStream outStream) throws Exception {
 		BufferedReader reader = new BufferedReader(new FileReader(inputFile));

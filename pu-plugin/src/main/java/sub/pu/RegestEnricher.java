@@ -78,7 +78,7 @@ public class RegestEnricher {
 			}
 		}
 		for (Regest regest : regests) {
-			if (regest.csvLine.endsWith("R")) {
+			if (regest.csvLine.endsWith("R") || regest.csvLine.endsWith("R,")) {
 				String keyNumber = regest.csvLine.split(",")[0];
 				regest.jaffe = jaffeMap.get(keyNumber);
 			}

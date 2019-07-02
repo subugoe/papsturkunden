@@ -19,9 +19,9 @@ public class RegestExtractor {
 			processCsvLine(csvLines[i], i);
 		}
 		
-		for (String endLine : endLines) {
-			processEndLine(endLine);
-		}
+//		for (String endLine : endLines) {
+//			processEndLine(endLine);
+//		}
 
 		Collections.sort(milestones, new Milestone.BookOrderComparator());
 		removeDoubles();
