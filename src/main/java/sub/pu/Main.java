@@ -3,11 +3,15 @@ package sub.pu;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
+import sub.ent.api.ImporterStepUpload;
 import sub.pu.data.Regest;
+import sub.pu.importing.ImporterStepConvert;
 
 public class Main {
 
@@ -16,6 +20,9 @@ public class Main {
 	}
 	
 	private void execute(String[] args) throws Exception {
+		
+		importIntoSolr();
+		
 		PrintWriter writer = new PrintWriter(new FileWriter("/home/dennis/papsturkunden_germania3/search-results.txt"));
 		PrintWriter writerForXml = new PrintWriter(new FileWriter("/home/dennis/papsturkunden_germania3/germania3.xml"));
 		String tocCsvFile = FileUtils.readFileToString(new File("/home/dennis/papsturkunden_germania3/TOC.csv"), "UTF8");
@@ -59,6 +66,17 @@ public class Main {
 //			writer.println("-------------------------------------------------------------------------------------");
 		}
 		writer.close();
+	}
+
+	private void importIntoSolr() throws Exception {
+		Map<String, String> params = new HashMap<>();
+		params.put("gitDir", "/home/dennis/papsturkunden_germania3");
+		params.put("solrXmlDir", "/home/dennis/papsturkunden_germania3/out/solrxml");
+		params.put("solrUrl", "http://localhost:8983/solr");
+		params.put("solrImportCore", "pu");
+		
+		new ImporterStepConvert().execute(params);
+		new ImporterStepUpload().execute(params);
 	}
 
 }
