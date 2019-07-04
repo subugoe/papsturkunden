@@ -1,5 +1,9 @@
 package sub.pu;
 
+import sub.pu.data.Milestone;
+import sub.pu.data.Regest;
+import sub.pu.util.SolrSearcher;
+
 public class RegestCreator {
 
 	public Regest makeFromMilestones(Milestone starting, Milestone ending) throws Exception {

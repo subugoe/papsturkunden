@@ -1,4 +1,4 @@
-package sub.pu;
+package sub.pu.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+
+import sub.pu.data.Milestone;
+import sub.pu.data.RegestInfo;
 
 public class SolrSearcher {
 

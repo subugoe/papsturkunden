@@ -22,6 +22,11 @@ allprojects {
 	}
 }
 
+dependencies {
+	compile project(':pu-plugin')
+	compile project(':solr-importer:core')
+}
+
 project(':solr-importer:web') {
 	dependencies {
 		runtime project(':pu-plugin')

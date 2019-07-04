@@ -1,4 +1,4 @@
-package sub.pu;
+package sub.pu.data;
 
 import java.util.ArrayList;
 import java.util.List;

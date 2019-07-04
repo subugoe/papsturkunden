@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import sub.pu.data.Milestone;
+import sub.pu.data.Regest;
+import sub.pu.data.RegestInfo;
+import sub.pu.util.SolrSearcher;
+
 public class RegestExtractor {
 
 	private List<Milestone> milestones = new ArrayList<>();

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sub.pu.data.Regest;
+
 public class RegestEnricher {
 
 	private Map<Integer, String[]> chapterMap = new HashMap<>();

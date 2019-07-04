@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import sub.pu.data.Regest;
+
 public class RegestEnricherTest {
 	
 	private RegestEnricher enricher = new RegestEnricher();

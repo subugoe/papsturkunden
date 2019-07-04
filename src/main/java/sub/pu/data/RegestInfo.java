@@ -1,4 +1,4 @@
-package sub.pu;
+package sub.pu.data;
 
 public class RegestInfo {
 	public String page;
