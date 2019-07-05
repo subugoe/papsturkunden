@@ -34,7 +34,6 @@
 
   <field name="id" type="int" required="true" />
   
-  <field name="book" type="string" />
   <field name="page" type="int" />
   <field name="line" type="text_de" />
   <field name="line_spaceless" type="string" />

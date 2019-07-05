@@ -64,18 +64,18 @@ public class TextToSolrTransformerTest {
 	public void twoLinesWithPageBreak() throws Exception {
 		String result = transform("twoLines_withPageBreak.txt");
 		assertXpathEvaluatesTo("myline 1", "//doc[1]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-22", "//doc[1]/field[@name='page']", result);
+		assertXpathEvaluatesTo("1", "//doc[1]/field[@name='page']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-21", "//doc[2]/field[@name='page']", result);
+		assertXpathEvaluatesTo("2", "//doc[2]/field[@name='page']", result);
 	}
 
 	@Test
 	public void twoFormFeeds_skipsOnePage() throws Exception {
 		String result = transform("twoFormFeeds.txt");
 		assertXpathEvaluatesTo("myline 1", "//doc[1]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-22", "//doc[1]/field[@name='page']", result);
+		assertXpathEvaluatesTo("1", "//doc[1]/field[@name='page']", result);
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
-		assertXpathEvaluatesTo("-20", "//doc[2]/field[@name='page']", result);
+		assertXpathEvaluatesTo("3", "//doc[2]/field[@name='page']", result);
 	}
 	
 	@Test
@@ -86,15 +86,8 @@ public class TextToSolrTransformerTest {
 		assertXpathEvaluatesTo("myline 2", "//doc[2]/field[@name='line']", result);
 	}
 	
-	//@Test
-	public void test2() throws Exception {
-		File inFile = new File("/home/dennis/papsturkunden/out-pdftotext.txt");
-		 
-		transformer.transform(inFile, new FileOutputStream("/home/dennis/papsturkunden/bla.xml"));
-	}
-	
 	private String transform(String fileName) throws Exception {
-		transformer.transform(new File("src/test/resources/" + fileName), outputBaos);
+		transformer.transform(new File("src/test/resources/" + fileName), 0, outputBaos);
 		return outputBaos.toString();
 	}
 

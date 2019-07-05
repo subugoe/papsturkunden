@@ -12,7 +12,7 @@ public class XmlRegestWriter {
 	
 	private DateBuilder dateBuilder = new DateBuilder();
 
-	public void write(List<Regest> regests, PrintWriter out) {
+	public void write(List<Regest> regests, String pdfFileName, String bookName, int pageOffset, PrintWriter out) {
 		out.println("<?xml version=\"1.0\"?>");
 		out.println("<body>");
 		
@@ -20,9 +20,9 @@ public class XmlRegestWriter {
 			out.println("<text type=\"charter\">");
 			//out.println("  <!-- " + regest.date + " -->");
 			out.println("  <date_sort value=\"" + dateBuilder.getDate(regest.date) + "\">" + dateBuilder.getYear(regest.date) + "</date_sort>");
-			String idno = regest.bookName + ", S. " + regest.page + " n. " + extractDigits(regest.number);
+			String idno = bookName + ", S. " + regest.page + " n. " + extractDigits(regest.number);
 			out.println("  <idno>" + idno + "</idno>");
-			out.println("  <pont_bd>" + regest.bookName + "</pont_bd>");
+			out.println("  <pont_bd>" + bookName + "</pont_bd>");
 			out.println("  <pont_no>" + regest.page + " n. " + extractDigits(regest.number) + "</pont_no>");
 			if (!regest.popeIsAlsoPontifikat) {
 				//out.println("  <!--ZEILE1: " + regest.textLines.get(1) + "-->");
@@ -35,8 +35,8 @@ public class XmlRegestWriter {
 			out.println("  <diocese>" + regest.chapter + "</diocese>");
 			out.println("  <jaffe2>" + regest.jaffe +"</jaffe2>");
 			out.println("  <regimp></regimp>");
-			int pdfPage = Integer.parseInt(regest.page) + 23;
-			out.println("  <doc_regest name=\"Germania Pontificia III (nur OCR).pdf#page=" + pdfPage + "\">" + idno + "</doc_regest>");
+			int pdfPage = Integer.parseInt(regest.page) + pageOffset;
+			out.println("  <doc_regest name=\"" + pdfFileName + "#page=" + pdfPage + "\">" + idno + "</doc_regest>");
 			out.println("</text>");
 		}
 		

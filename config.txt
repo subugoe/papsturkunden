@@ -1,0 +1,16 @@
+mainDirectory: /home/dennis/papsturkunden_germania3
+pdfFileName: Germania Pontificia III (nur OCR).pdf
+bookShortName: Germ. Pont. III
+
+
+inputSubDirectory: inputs
+input_tableOfContents: TOC.csv
+input_chapters: chapters.csv
+input_jaffe: jaffe.csv
+input_endMilestones: end-milestones.txt
+
+# outputs go into the main directory
+output_xml: result.xml
+output_searchResults: search-results.txt
+
+solrUrl: http://localhost:8983/solr

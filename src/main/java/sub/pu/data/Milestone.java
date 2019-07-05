@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 public class Milestone {
 
-	public String bookName;
 	public RegestInfo regestInfo;
 	public int lineNumber;
 	public boolean isRegestBeginning = true;

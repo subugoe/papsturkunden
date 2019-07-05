@@ -27,11 +27,9 @@ public class SolrSearcher {
 		SolrDocumentList results = askSolr(wholeQuery);
 		
 		String resultLine = (String)results.get(0).getFieldValue("line");
-		String bookName = (String)results.get(0).getFieldValue("book");
 		int lineNumber = (int)results.get(0).getFieldValue("id");
 
 		Milestone milestone = new Milestone();
-		milestone.bookName = bookName;
 		milestone.lineNumber = lineNumber;
 		milestone.regestInfo = regestInfo;
 		milestone.lineContents = resultLine;

@@ -10,10 +10,11 @@ import java.io.PrintWriter;
 public class TextToSolrTransformer {
 	
 	private int lineNumber = 0;
-	private int pageNumber = -22;
-	private String bookName = "Germ. Pont. III";
+	private int pageNumber;
 	
-	public void transform(File inputFile, OutputStream outStream) throws Exception {
+	public void transform(File inputFile, int pageOffset, OutputStream outStream) throws Exception {
+		pageNumber = 1 - pageOffset;
+		
 		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(outStream));
 
@@ -57,7 +58,6 @@ public class TextToSolrTransformer {
 		writer.println("<doc>");
 		lineNumber++;
 		writer.println("  <field name=\"id\">" + lineNumber + "</field>");
-		writer.println("  <field name=\"book\">" + bookName + "</field>");
 		writer.println("  <field name=\"page\">" + pageNumber + "</field>");
 		writer.println("  <field name=\"line\"><![CDATA[" + removeReverseAlphabet(first) + "]]></field>");
 		writer.println("  <field name=\"line_spaceless\"><![CDATA[" + removeReverseAlphabet(first).replaceAll("\\s", "") + "]]></field>");

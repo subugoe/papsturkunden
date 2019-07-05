@@ -11,7 +11,6 @@ public class RegestCreator {
 		SolrSearcher searcher = new SolrSearcher();
 		
 		Regest regest = new Regest();
-		regest.bookName = starting.bookName;
 		regest.pope = starting.regestInfo.pope;
 		regest.popeIsAlsoPontifikat = starting.regestInfo.popeIsAlsoPontifikat;
 		regest.date = starting.regestInfo.date;

@@ -19,12 +19,15 @@ public class ImporterStepConvert extends ImporterStep {
 		File outputDir = new File(solrXmlDir);
 		File inputDir = new File(gitDir);
 		File inputText = new File(inputDir, "book.txt");
+		
+		int pageOffset = Integer.parseInt(params.get("pageOffset"));
 
+		fileAccess.makeSureThatExists(outputDir);
 		fileAccess.cleanDir(outputDir);
 		out.println("    Converting text file to index XML file.");
 
 		OutputStream fileOs = fileAccess.createOutputStream(outputDir, "solr-output.xml");
-		transformer.transform(inputText, fileOs);
+		transformer.transform(inputText, pageOffset, fileOs);
 	}
 
 	@Override
