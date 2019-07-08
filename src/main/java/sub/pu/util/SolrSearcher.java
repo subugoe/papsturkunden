@@ -46,13 +46,19 @@ public class SolrSearcher {
 	
 	public Milestone findRegestEnding(String page, String textLine) throws Exception {
 		String query = "page:" + page + " AND line_spaceless:\"" + textLine.replaceAll("\\s", "") + "\"";
+
 		SolrDocumentList results = askSolr(query);
+		if (results.isEmpty()) {
+			System.out.println("WARNING Using only the page '" + page + "' as ending milestone. No results for query: " + query);
+			results = askSolr("page:" + page);
+		}
 		int lineNumber = (int)results.get(0).getFieldValue("id");
 
 		Milestone milestone = new Milestone();
 		milestone.isRegestBeginning = false;
 		milestone.lineNumber = lineNumber;
 		milestone.solrQuery = query;
+		milestone.lineContents = page + "," + textLine;
 
 		return milestone;
 	}

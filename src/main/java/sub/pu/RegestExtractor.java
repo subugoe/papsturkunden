@@ -24,9 +24,9 @@ public class RegestExtractor {
 			processCsvLine(csvLines[i], i);
 		}
 		
-//		for (String endLine : endLines) {
-//			processEndLine(endLine);
-//		}
+		for (String endLine : endLines) {
+			processEndLine(endLine);
+		}
 
 		Collections.sort(milestones, new Milestone.BookOrderComparator());
 		removeDoubles();
@@ -49,6 +49,9 @@ public class RegestExtractor {
 			} else if (!endingM.isRegestBeginning && i < milestones.size() - 1) {
 				// next chapter, new regest beginning
 				beginningM = milestones.get(i + 1);
+				if (!beginningM.isRegestBeginning) {
+					throw new RuntimeException("Several ending milestones. Try to remove this one: " + beginningM.lineContents);
+				}
 				i++;
 			}			
 		}
