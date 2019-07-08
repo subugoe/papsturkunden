@@ -73,7 +73,10 @@ public class Main {
 			}
 
 			writer.println(lineNumber + ":   " + regest.textLines.get(0) + "     ------    " + regest.pope);
-
+			
+//			writer.println("Query: ");
+//			writer.println(regest.queryForDebugging);
+			
 //			writer.println("Seite: " + regest.page);
 //			writer.println("Regestnummer: " + regest.number);
 //			writer.println("Datum: " + regest.date);

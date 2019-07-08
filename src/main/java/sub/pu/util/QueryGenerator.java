@@ -41,7 +41,7 @@ public class QueryGenerator {
 					+ "line:" + regestNumberQuery + "^5 OR "
 					+ "line:" + dateFuzzyQuery + "^3 OR "
 					+ "line:" + dateExactQuery + " OR "
-					+ "next_line:(*" + regestInfo.pope.split(" ")[0] + "*)^4"
+					+ "next_line:(*" + regestInfo.pope.split(" ")[0] + "*)^13"
 				+ ")";
 		return wholeQuery;
 	}

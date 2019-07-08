@@ -21,6 +21,7 @@ public class RegestCreator {
 		regest.fromLine = starting.lineNumber;
 		regest.toLine = ending.lineNumber;
 		regest.csvLine = starting.regestInfo.csvLine;
+		regest.queryForDebugging = starting.solrQuery;
 		
 		regest.textLines = searcher.cutOutRegestText(starting.lineNumber, ending.lineNumber);
 		
