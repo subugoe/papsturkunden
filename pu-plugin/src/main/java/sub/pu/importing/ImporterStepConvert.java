@@ -18,7 +18,7 @@ public class ImporterStepConvert extends ImporterStep {
 		String solrXmlDir = params.get("solrXmlDir");
 		File outputDir = new File(solrXmlDir);
 		File inputDir = new File(gitDir);
-		File inputText = new File(inputDir, "book.txt");
+		File inputText = new File(inputDir, params.get("bookFileName"));
 		
 		int pageOffset = Integer.parseInt(params.get("pageOffset"));
 

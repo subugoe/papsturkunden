@@ -21,6 +21,7 @@ public class Main {
 	private String pdfFileName;
 	private String bookShortName;
 	private File inputDirectory;
+	private String input_bookFileName;
 	private File input_tableOfContents;
 	private File input_chapters;
 	private File input_jaffe;
@@ -93,6 +94,7 @@ public class Main {
 		pdfFileName = (String) props.get("pdfFileName");
 		bookShortName = (String) props.get("bookShortName");
 		inputDirectory = new File(mainDirectory, (String) props.get("inputSubDirectory"));
+		input_bookFileName = (String) props.get("input_book");
 		input_tableOfContents = new File(inputDirectory, (String) props.get("input_tableOfContents"));
 		input_chapters = new File(inputDirectory, (String) props.get("input_chapters"));
 		input_jaffe = new File(inputDirectory, (String) props.get("input_jaffe"));
@@ -111,6 +113,7 @@ public class Main {
 	private void importIntoSolr() throws Exception {
 		Map<String, String> params = new HashMap<>();
 		params.put("gitDir", inputDirectory.getAbsolutePath());
+		params.put("bookFileName", input_bookFileName);
 		params.put("solrXmlDir", solrTempDirectory);
 		params.put("solrUrl", solrUrl);
 		params.put("solrImportCore", "pu");

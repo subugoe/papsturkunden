@@ -4,10 +4,12 @@ bookShortName: Germ. Pont. III
 
 
 inputSubDirectory: inputs
+input_book: book.txt
 input_tableOfContents: TOC.csv
+# chapters must be semicolon-separated, because they can contain commas
 input_chapters: chapters.csv
 input_jaffe: jaffe.csv
-input_endMilestones: end-milestones.txt
+input_endMilestones: end-milestones.csv
 
 # outputs go into the main directory
 output_xml: result.xml
