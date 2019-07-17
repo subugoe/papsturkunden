@@ -13,8 +13,7 @@ public class RegestSplitter {
 		String mainPart = "";
 		for (int i = 1; i < regestLines.size(); i++) {
 			String line = regestLines.get(i);
-			int currentSpaces = line.length() - line.replaceAll("^\\s*", "").length();
-			if (currentSpaces >= writtenRecordSpacesFrom && currentSpaces <= writtenRecordSpacesTo) {
+			if (beginsWrittenRecord(line) || beginsComment(line)) {
 				break;
 			}
 			mainPart += line + " ";
@@ -27,10 +26,9 @@ public class RegestSplitter {
 		boolean hasBegun = false;
 		for (int i = 1; i < regestLines.size(); i++) {
 			String line = regestLines.get(i);
-			int currentSpaces = line.length() - line.replaceAll("^\\s*", "").length();
-			if (!hasBegun && currentSpaces >= writtenRecordSpacesFrom && currentSpaces <= writtenRecordSpacesTo) {
+			if (!hasBegun && beginsWrittenRecord(line)) {
 				hasBegun = true;
-			} else if (currentSpaces >= commentSpacesFrom && currentSpaces <= commentSpacesTo) {
+			} else if (beginsComment(line)) {
 				break;
 			}
 			if (hasBegun) {
@@ -43,10 +41,9 @@ public class RegestSplitter {
 	public String cutOutComment(List<String> regestLines) {
 		String comment = "";
 		boolean hasBegun = false;
-		for ( int i = 1; i < regestLines.size(); i++) {
+		for (int i = 1; i < regestLines.size(); i++) {
 			String line = regestLines.get(i);
-			int currentSpaces = line.length() - line.replaceAll("^\\s*", "").length();
-			if (!hasBegun && currentSpaces >= commentSpacesFrom && currentSpaces <= commentSpacesTo) {
+			if (!hasBegun && beginsComment(line)) {
 				hasBegun = true;
 			}
 			if (hasBegun) {
@@ -55,6 +52,17 @@ public class RegestSplitter {
 		}
 		return comment;
 	}
-
 	
+	private boolean beginsWrittenRecord(String line) {
+		return isBlockBeginning(line, writtenRecordSpacesFrom, writtenRecordSpacesTo);
+	}
+
+	private boolean beginsComment(String line) {
+		return isBlockBeginning(line, commentSpacesFrom, commentSpacesTo);
+	}
+
+	private boolean isBlockBeginning(String line, int spacesFrom, int spacesTo) {
+		int leadingSpaces = line.length() - line.replaceAll("^\\s*", "").length();
+		return leadingSpaces >= spacesFrom && leadingSpaces <= spacesTo;
+	}
 }

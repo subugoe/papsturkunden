@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -66,6 +68,7 @@ public class Main {
 		regestWriter.write(regests, pdfFileName, bookShortName, pdfToRealPageOffset, writerForXml);
 		writerForXml.close();
 		
+		Set<Integer> whitespaces = new HashSet<>();
 		for (Regest regest : regests) {
 			String lineNumber = regest.bookOrder + "";
 			for (int i = lineNumber.length(); i < 5; i++) {
@@ -86,7 +89,25 @@ public class Main {
 //				writer.println(textLine);
 //			}
 //			writer.println("-------------------------------------------------------------------------------------");
+			RegestSplitter splitter = new RegestSplitter();
+			writer.println("--- Main:");
+			writer.println(splitter.cutOutMainPart(regest.textLines));
+			writer.println("--- Überlieferung:");
+			writer.println(splitter.cutOutWrittenRecord(regest.textLines));
+			writer.println("--- Sachkommentar:");
+			writer.println(splitter.cutOutComment(regest.textLines));
+			
+			for (String textLine : regest.textLines) {
+				if (textLine.startsWith("  ")) {
+					String shortLine = textLine.replaceFirst("\\s+", "");
+					int whitePrefix = textLine.length() - shortLine.length();
+					writer.println(whitePrefix);
+					whitespaces.add(whitePrefix);
+				}
+			}
+
 		}
+		System.out.println(whitespaces);
 		writer.close();
 	}
 
