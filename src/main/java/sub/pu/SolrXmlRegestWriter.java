@@ -19,6 +19,10 @@ public class SolrXmlRegestWriter {
 			out.println("<field name='page'>" + regest.page + "</field>");
 			int pdfPage = Integer.parseInt(regest.page) + pageOffset;
 			out.println("<field name='page_pdf'>" + pdfPage + "</field>");
+			
+			for (String line : regest.textLines) {
+				out.println("<field name='orig_text'><![CDATA[" + line + "]]></field>");
+			}
 
 			out.println("</doc>");
 		}
