@@ -29,6 +29,7 @@ public class Main {
 	private File input_jaffe;
 	private File input_endMilestones;
 	private File output_xml;
+	private File output_solrxml;
 	private File output_searchResults;
 	private String solrUrl;
 	private String solrTempDirectory;
@@ -48,6 +49,7 @@ public class Main {
 				
 		PrintWriter writer = new PrintWriter(new FileWriter(output_searchResults));
 		PrintWriter writerForXml = new PrintWriter(new FileWriter(output_xml));
+		PrintWriter writerForSolrXml = new PrintWriter(new FileWriter(output_solrxml));
 		String endMilestonesFile = FileUtils.readFileToString(input_endMilestones, "UTF8");
 		String[] endLines = endMilestonesFile.split("\\n");
 		
@@ -67,6 +69,10 @@ public class Main {
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
 		regestWriter.write(regests, pdfFileName, bookShortName, pdfToRealPageOffset, writerForXml);
 		writerForXml.close();
+		
+		SolrXmlRegestWriter solrWriter = new SolrXmlRegestWriter();
+		solrWriter.write(regests, pdfFileName, bookShortName, pdfToRealPageOffset, writerForSolrXml);
+		writerForSolrXml.close();
 		
 		Set<Integer> whitespaces = new HashSet<>();
 		for (Regest regest : regests) {
@@ -124,6 +130,7 @@ public class Main {
 		input_jaffe = new File(inputDirectory, (String) props.get("input_jaffe"));
 		input_endMilestones = new File(inputDirectory, (String) props.get("input_endMilestones"));
 		output_xml = new File(mainDirectory, (String) props.get("output_xml"));
+		output_solrxml = new File(mainDirectory, bookShortName + "_solr.xml");
 		output_searchResults = new File(mainDirectory, (String) props.get("output_searchResults"));
 		solrUrl = (String) props.get("solrUrl");
 		solrTempDirectory = new File(mainDirectory, "solrxml").getAbsolutePath();

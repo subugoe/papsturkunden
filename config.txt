@@ -1,6 +1,6 @@
-mainDirectory: /home/dennis/papsturkunden_germania3
-pdfFileName: Germania Pontificia III (nur OCR).pdf
-bookShortName: Germ. Pont. III
+mainDirectory: /home/dennis/papsturkunden_germania1
+pdfFileName: Germania Pontificia I (nur OCR).pdf
+bookShortName: Germ. Pont. I
 
 
 inputSubDirectory: inputs
