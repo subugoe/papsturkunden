@@ -86,5 +86,13 @@ public class RegestEnricher {
 			}
 		}
 	}
+	
+	public void addMetadata(List<Regest> regests, String pdfFileName, String bookName, int pageOffset) {
+		for (Regest regest : regests) {
+			regest.pdfFileName = pdfFileName;
+			regest.bookShortName = bookName;
+			regest.pdfPage = Integer.parseInt(regest.page) + pageOffset;
+		}
+	}
 
 }

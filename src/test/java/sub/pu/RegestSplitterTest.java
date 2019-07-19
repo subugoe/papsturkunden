@@ -56,4 +56,41 @@ public class RegestSplitterTest {
 		assertEquals("            v. Mainz,       bücher ", comment);
 	}
 
+	@Test
+	public void combineTwoLetters() {
+		String result = splitter.combineWhitespacedWords("a b", "[a-z]");	
+		assertEquals("ab", result);
+	}
+
+	@Test
+	public void combineThreeLetters() {
+		String result = splitter.combineWhitespacedWords("a b c", "[a-z]");	
+		assertEquals("abc", result);
+	}
+
+	@Test
+	public void combineFourLetters() {
+		String result = splitter.combineWhitespacedWords("a b c d", "[a-z]");	
+		assertEquals("abcd", result);
+	}
+
+	@Test
+	public void dontCombineWords() {
+		String result = splitter.combineWhitespacedWords("aa bc", "[a-z]");	
+		assertEquals("aa bc", result);
+	}
+
+	@Test
+	public void realWorldExample() {
+		String result = splitter.combineWhitespacedWords("A l e x a n d r o I I I Conradus", "[IVX]");	
+		result = splitter.combineWhitespacedWords(result, "[a-zA-Z]");
+		assertEquals("Alexandro III Conradus", result);
+	}
+	
+	@Test
+	public void parseSupplier() {
+		String result = splitter.parseSupplier("Leoni III [Arno archiep.]: cum dispositum");	
+		assertEquals("[Arno archiep.]", result);
+	}
+	
 }

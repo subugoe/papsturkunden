@@ -19,6 +19,10 @@ public class Regest {
 	public String subchapter = "";
 	public String jaffe = "";
 	
+	public String pdfFileName = "";
+	public String bookShortName = "";
+	public int pdfPage;
+	
 	public String queryForDebugging;
 	public int fromLine;
 	public int toLine;

@@ -65,13 +65,14 @@ public class Main {
 		RegestEnricher enricher = new RegestEnricher();
 		enricher.addChapters(regests, chapterLines);
 		enricher.addJaffes(regests, jaffeLines);
+		enricher.addMetadata(regests, pdfFileName, bookShortName, pdfToRealPageOffset);
 		
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
-		regestWriter.write(regests, pdfFileName, bookShortName, pdfToRealPageOffset, writerForXml);
+		regestWriter.write(regests, writerForXml);
 		writerForXml.close();
 		
 		SolrXmlRegestWriter solrWriter = new SolrXmlRegestWriter();
-		solrWriter.write(regests, pdfFileName, bookShortName, pdfToRealPageOffset, writerForSolrXml);
+		solrWriter.write(regests, writerForSolrXml);
 		writerForSolrXml.close();
 		
 		Set<Integer> whitespaces = new HashSet<>();
@@ -95,19 +96,19 @@ public class Main {
 //				writer.println(textLine);
 //			}
 //			writer.println("-------------------------------------------------------------------------------------");
-			RegestSplitter splitter = new RegestSplitter();
-			writer.println("--- Main:");
-			writer.println(splitter.cutOutMainPart(regest.textLines));
-			writer.println("--- Überlieferung:");
-			writer.println(splitter.cutOutWrittenRecord(regest.textLines));
-			writer.println("--- Sachkommentar:");
-			writer.println(splitter.cutOutComment(regest.textLines));
+//			RegestSplitter splitter = new RegestSplitter();
+//			writer.println("--- Main:");
+//			writer.println(splitter.cutOutMainPart(regest.textLines));
+//			writer.println("--- Überlieferung:");
+//			writer.println(splitter.cutOutWrittenRecord(regest.textLines));
+//			writer.println("--- Sachkommentar:");
+//			writer.println(splitter.cutOutComment(regest.textLines));
 			
 			for (String textLine : regest.textLines) {
 				if (textLine.startsWith("  ")) {
 					String shortLine = textLine.replaceFirst("\\s+", "");
 					int whitePrefix = textLine.length() - shortLine.length();
-					writer.println(whitePrefix);
+//					writer.println(whitePrefix);
 					whitespaces.add(whitePrefix);
 				}
 			}
