@@ -13,6 +13,13 @@ public class RegestSplitter {
 	private int commentSpacesFrom = 10;
 	private int commentSpacesTo = 16;
 
+	public String cutOutHeader(List<String> regestLines) {
+		String header = regestLines.get(0);
+		header = header.replaceAll("\\s+", " ").trim();
+		header = header.replace("er.", "cr.");
+		return header;
+	}
+	
 	public String cutOutMainPart(List<String> regestLines) {
 		String mainPart = "";
 		for (int i = 1; i < regestLines.size(); i++) {
@@ -20,9 +27,22 @@ public class RegestSplitter {
 			if (beginsWrittenRecord(line) || beginsComment(line)) {
 				break;
 			}
-			mainPart += line + " ";
+			if (i == 1) {
+				line = combineWhitespacedWords(line);
+			}
+			mainPart += prepareLine(line);
 		}
 		return mainPart;
+	}
+	
+	private String prepareLine(String line) {
+		line = line.replaceAll("\\s+", " ").trim();
+		if (line.endsWith("-")) {
+			line = line.replaceFirst("-$", "");
+		} else {
+			line += "\n";
+		}
+		return line;
 	}
 
 	public String cutOutWrittenRecord(List<String> regestLines) {
@@ -36,7 +56,7 @@ public class RegestSplitter {
 				break;
 			}
 			if (hasBegun) {
-				writtenRecord += line + " ";
+				writtenRecord += prepareLine(line);
 			}
 		}
 		return writtenRecord;
@@ -51,7 +71,7 @@ public class RegestSplitter {
 				hasBegun = true;
 			}
 			if (hasBegun) {
-				comment += line + " ";
+				comment += prepareLine(line);
 			}
 		}
 		return comment;
@@ -73,7 +93,7 @@ public class RegestSplitter {
 	public String getPlaceAndDate(Regest regest) {
 		String headerLine = regest.textLines.get(0).trim();
 		if (headerLine.length() > 5) {
-			return headerLine.substring(5).replaceAll("\\s+", " ").replace("<", " ").trim();
+			return headerLine.substring(5).replaceAll("\\s+", " ").replace("er.", "cr.").replace("<", " ").trim();
 		} else {
 			return "";
 		}
@@ -97,8 +117,7 @@ public class RegestSplitter {
 			return regest.pope + " (" + regest.pope + ")";
 		} else {
 			String line = regest.textLines.get(1);
-			line = combineWhitespacedWords(line, "[IVX]");
-			line = combineWhitespacedWords(line, "[()\\[\\]a-zA-Z]");
+			line = combineWhitespacedWords(line);
 						
 //			System.out.println(line);
 //			System.out.println(regest.textLines.get(2));
@@ -107,51 +126,78 @@ public class RegestSplitter {
 		}
 	}
 	
-	String combineWhitespacedWords(String line, String filterRegex) {
-		List<Integer> lonelyLetterIndexes = new ArrayList<>();
+	String combineWhitespacedWords(String line) {
+		String result = "";
+		if (line.length() <= 3) {
+			return line;
+		}
 		for (int i = 0; i < line.length(); i++) {
-			if (isLonelyLetter(i, line, filterRegex)) {
-				lonelyLetterIndexes.add(i);
+			String currentChar = "" + line.charAt(i);
+			result += currentChar;
+
+			if (i + 3 >= line.length()) {
+				continue;
+			}
+			
+			boolean nextIsWhitespace = ("" + line.charAt(i + 1)).matches(" ");
+			String candidate = "" + line.charAt(i + 2);
+			boolean afterCandidateIsWhitespace = ("" + line.charAt(i + 3)).matches(" ");
+			
+			boolean acceptedChars = currentChar.matches("[a-zA-Z\\[(]") && candidate.matches("[a-zA-Z\\])]");
+			boolean forbiddenOrder = currentChar.matches("[a-z]") && candidate.matches("[A-Z]");
+			
+			if (nextIsWhitespace && afterCandidateIsWhitespace && acceptedChars && !forbiddenOrder) {
+				i++;
 			}
 		}
-		for (int i = lonelyLetterIndexes.size() - 1; i > 0; i--) {
-			int current = lonelyLetterIndexes.get(i);
-			int preceding = lonelyLetterIndexes.get(i - 1);
-			if (current - preceding == 2) {
-				line = removeCharacterFromLine(current - 1, line);
-			}
-		}
-		return line;
+		return result;
 	}
-
-	private String removeCharacterFromLine(int i, String line) {
-		StringBuilder sb = new StringBuilder(line);
-		sb.deleteCharAt(i);
-		return sb.toString();
-	}
-
-	private boolean isLonelyLetter(int i, String line, String filterRegex) {
-		String current = line.charAt(i) + "";
-		if (current.matches(filterRegex)) {
-			boolean openToRight = line.length() > i + 1;
-			boolean openToLeft = i > 0;
-			if (openToRight && openToLeft) {
-				if (isWhitespace(i - 1, line) && isWhitespace(i + 1, line)) {
-					return true;
-				}
-			} else if (openToRight && isWhitespace(i + 1, line)) {
-				return true;
-			} else if (openToLeft && isWhitespace(i - 1, line)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
-	private boolean isWhitespace(int index, String line) {
-		return ("" + line.charAt(index)).matches(" ");
-	}
+	
+//	String combineWhitespacedWords(String line, String filterRegex) {
+//		List<Integer> lonelyLetterIndexes = new ArrayList<>();
+//		for (int i = 0; i < line.length(); i++) {
+//			if (isLonelyLetter(i, line, filterRegex)) {
+//				lonelyLetterIndexes.add(i);
+//			}
+//		}
+//		for (int i = lonelyLetterIndexes.size() - 1; i > 0; i--) {
+//			int currentIndex = lonelyLetterIndexes.get(i);
+//			int precedingIndex = lonelyLetterIndexes.get(i - 1);
+//			if (currentIndex - precedingIndex == 2) {
+//				line = removeCharacterFromLine(currentIndex - 1, line);
+//			}
+//		}
+//		return line;
+//	}
+//
+//	private String removeCharacterFromLine(int i, String line) {
+//		StringBuilder sb = new StringBuilder(line);
+//		sb.deleteCharAt(i);
+//		return sb.toString();
+//	}
+//
+//	private boolean isLonelyLetter(int i, String line, String filterRegex) {
+//		String current = line.charAt(i) + "";
+//		if (current.matches(filterRegex)) {
+//			boolean openToRight = line.length() > i + 1;
+//			boolean openToLeft = i > 0;
+//			if (openToRight && openToLeft) {
+//				if (isWhitespace(i - 1, line) && isWhitespace(i + 1, line)) {
+//					return true;
+//				}
+//			} else if (openToRight && isWhitespace(i + 1, line)) {
+//				return true;
+//			} else if (openToLeft && isWhitespace(i - 1, line)) {
+//				return true;
+//			}
+//		}
+//		
+//		return false;
+//	}
+//
+//	private boolean isWhitespace(int index, String line) {
+//		return ("" + line.charAt(index)).matches(" ");
+//	}
 	
 	String parseSupplier(String line) {
 		String[] words = line.split("\\s+");

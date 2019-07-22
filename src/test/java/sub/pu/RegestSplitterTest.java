@@ -35,56 +35,61 @@ public class RegestSplitterTest {
 	@Test
 	public void withoutWrittenRecord() {
 		String mainPart = splitter.cutOutMainPart(regestLines(false, true));
-		assertEquals("Z a c h a r i a s Bonifatio viros apud ", mainPart);
+		assertEquals("Zacharias Bonifatio\nviros apud\n", mainPart);
 
 		String writtenRecord = splitter.cutOutWrittenRecord(regestLines(false, true));
 		assertEquals("", writtenRecord);
 		
 		String comment = splitter.cutOutComment(regestLines(false, true));
-		assertEquals("            v. Mainz,       bücher ", comment);
+		assertEquals("v. Mainz,\nbücher\n", comment);
 	}
 
 	@Test
 	public void allParts() {
 		String mainPart = splitter.cutOutMainPart(regestLines(true, true));
-		assertEquals("Z a c h a r i a s Bonifatio viros apud ", mainPart);
+		assertEquals("Zacharias Bonifatio\nviros apud\n", mainPart);
 		
 		String writtenRecord = splitter.cutOutWrittenRecord(regestLines(true, true));
-		assertEquals("      Laud. in Reg. ", writtenRecord);
+		assertEquals("Laud. in\nReg.\n", writtenRecord);
 		
 		String comment = splitter.cutOutComment(regestLines(true, true));
-		assertEquals("            v. Mainz,       bücher ", comment);
+		assertEquals("v. Mainz,\nbücher\n", comment);
 	}
 
 	@Test
 	public void combineTwoLetters() {
-		String result = splitter.combineWhitespacedWords("a b", "[a-z]");	
-		assertEquals("ab", result);
+		String result = splitter.combineWhitespacedWords("a b bla");	
+		assertEquals("ab bla", result);
 	}
 
 	@Test
 	public void combineThreeLetters() {
-		String result = splitter.combineWhitespacedWords("a b c", "[a-z]");	
-		assertEquals("abc", result);
+		String result = splitter.combineWhitespacedWords("a b c bla");	
+		assertEquals("abc bla", result);
 	}
 
 	@Test
 	public void combineFourLetters() {
-		String result = splitter.combineWhitespacedWords("a b c d", "[a-z]");	
-		assertEquals("abcd", result);
+		String result = splitter.combineWhitespacedWords("a b c d bla");	
+		assertEquals("abcd bla", result);
 	}
 
 	@Test
 	public void dontCombineWords() {
-		String result = splitter.combineWhitespacedWords("aa bc", "[a-z]");	
+		String result = splitter.combineWhitespacedWords("aa bc");	
 		assertEquals("aa bc", result);
 	}
 
 	@Test
 	public void realWorldExample() {
-		String result = splitter.combineWhitespacedWords("A l e x a n d r o I I I Conradus", "[IVX]");	
-		result = splitter.combineWhitespacedWords(result, "[a-zA-Z]");
+		String result = splitter.combineWhitespacedWords("A l e x a n d r o I I I Conradus");	
 		assertEquals("Alexandro III Conradus", result);
+	}
+	
+	@Test
+	public void onlyOneRomanDigit() {
+		String result = splitter.combineWhitespacedWords("A l e x a n d r o I Conradus");	
+		assertEquals("Alexandro I Conradus", result);
 	}
 	
 	@Test
