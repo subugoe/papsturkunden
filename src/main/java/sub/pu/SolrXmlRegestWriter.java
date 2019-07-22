@@ -18,6 +18,7 @@ public class SolrXmlRegestWriter {
 		for (Regest regest : regests) {
 			out.println("<doc>");
 			
+			out.println("<field name='bd'>" + regest.bookShortName.replaceAll("[ \\.]+", "").toLowerCase() + "</field>");
 			String idno = regest.bookShortName + ", S. " + regest.page + " n. " + regest.number;
 			out.println("<field name='idno'>" + idno + "</field>");
 			out.println("<field name='date_sort'>" + dateBuilder.getYear(regest.date) + "</field>");
