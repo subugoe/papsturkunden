@@ -17,6 +17,7 @@ public class RegestSplitter {
 		String header = regestLines.get(0);
 		header = header.replaceAll("\\s+", " ").trim();
 		header = header.replace("er.", "cr.");
+		header = header.replace("Borna", "Roma");
 		return header;
 	}
 	
@@ -91,9 +92,10 @@ public class RegestSplitter {
 	}
 	
 	public String getPlaceAndDate(Regest regest) {
-		String headerLine = regest.textLines.get(0).trim();
-		if (headerLine.length() > 5) {
-			return headerLine.substring(5).replaceAll("\\s+", " ").replace("er.", "cr.").replace("<", " ").trim();
+		String header = cutOutHeader(regest.textLines);
+		int firstWhitespace = header.indexOf(" ");
+		if (firstWhitespace > 0) {
+			return header.substring(firstWhitespace).replace("<", " ").trim();
 		} else {
 			return "";
 		}
