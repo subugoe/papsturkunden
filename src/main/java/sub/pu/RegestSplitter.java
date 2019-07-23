@@ -38,6 +38,14 @@ public class RegestSplitter {
 	
 	private String prepareLine(String line) {
 		line = line.replaceAll("\\s+", " ").trim();
+		line = line.replace("— Heg.", "— Reg.");
+		line = line.replace("Land, in", "Laud. in");
+		line = line.replace("Begg.", "Regg.");
+		line = line.replace(". — Edel.", ". — Edd.");
+		line = line.replace(". — Beg.", ". — Reg.");
+		line = line.replace(" E g o ", " Ego ");
+		line = line.replace(" Mon. Genn. ", " Mon. Germ. ");
+		line = line.replace("Urkimdenbuch", "Urkundenbuch");
 		if (line.endsWith("-")) {
 			line = line.replaceFirst("-$", "");
 		} else {
