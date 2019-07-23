@@ -5,6 +5,7 @@ import java.util.List;
 
 import sub.pu.data.Regest;
 import sub.pu.util.DateBuilder;
+import sub.pu.util.Regex;
 
 public class SolrXmlRegestWriter {
 
@@ -19,6 +20,10 @@ public class SolrXmlRegestWriter {
 			out.println("<doc>");
 			
 			out.println("<field name='bd'>" + regest.bookShortName.replaceAll("[ \\.]+", "").toLowerCase() + "</field>");
+			out.println("<field name='page'>" + regest.page + "</field>");
+			out.println("<field name='num'>" + Regex.extractFirst("([0-9]+)", regest.number) + "</field>");
+			out.println("<field name='page_pdf'>" + regest.pdfPage + "</field>");
+			
 			String idno = regest.bookShortName + ", S. " + regest.page + " n. " + regest.number;
 			out.println("<field name='idno'>" + idno + "</field>");
 			out.println("<field name='date_sort'>" + dateBuilder.getYear(regest.date) + "</field>");
@@ -35,9 +40,6 @@ public class SolrXmlRegestWriter {
 			out.println("<field name='doc_regest'>" + doc_regest + "</field>");
 			out.println("<field name='doc_regest_name'>" + regest.pdfFileName + "#page=" + regest.pdfPage + "</field>");
 
-			out.println("<field name='page'>" + regest.page + "</field>");
-			out.println("<field name='page_pdf'>" + regest.pdfPage + "</field>");
-			
 			for (String line : regest.textLines) {
 				out.println("<field name='orig_text'><![CDATA[" + line + "]]></field>");
 			}
