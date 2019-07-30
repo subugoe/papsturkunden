@@ -15,4 +15,4 @@ input_endMilestones: end-milestones.csv
 output_xml: result.xml
 output_searchResults: search-results.txt
 
-solrUrl: http://localhost:8983/solr
+internalSolrUrl: http://localhost:8983/solr

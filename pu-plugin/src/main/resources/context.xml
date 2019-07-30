@@ -13,7 +13,6 @@
   <bean id="importer" class="sub.ent.backend.Importer">
     <property name="steps">
       <list>
-        <ref bean="convert" />
         <ref bean="upload" />
       </list>
     </property>

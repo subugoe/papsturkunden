@@ -31,7 +31,7 @@ public class Main {
 	private File output_xml;
 	private File output_solrxml;
 	private File output_searchResults;
-	private String solrUrl;
+	private String internalSolrUrl;
 	private String solrTempDirectory;
 	private int pdfToRealPageOffset;
 	
@@ -45,7 +45,7 @@ public class Main {
 		String tocCsvFile = FileUtils.readFileToString(input_tableOfContents, "UTF8");
 		String[] tocLines = tocCsvFile.split("\\n");
 		initPageOffset(tocLines[0]);
-		importIntoSolr();
+		importIntoInternalSolr();
 				
 		PrintWriter writer = new PrintWriter(new FileWriter(output_searchResults));
 		PrintWriter writerForXml = new PrintWriter(new FileWriter(output_xml));
@@ -133,7 +133,7 @@ public class Main {
 		output_xml = new File(mainDirectory, (String) props.get("output_xml"));
 		output_solrxml = new File(mainDirectory, bookShortName + "_solr.xml");
 		output_searchResults = new File(mainDirectory, (String) props.get("output_searchResults"));
-		solrUrl = (String) props.get("solrUrl");
+		internalSolrUrl = (String) props.get("internalSolrUrl");
 		solrTempDirectory = new File(mainDirectory, "solrxml").getAbsolutePath();
 	}
 
@@ -142,12 +142,12 @@ public class Main {
 		pdfToRealPageOffset = Integer.parseInt(lastField);
 	}
 
-	private void importIntoSolr() throws Exception {
+	private void importIntoInternalSolr() throws Exception {
 		Map<String, String> params = new HashMap<>();
 		params.put("gitDir", inputDirectory.getAbsolutePath());
 		params.put("bookFileName", input_bookFileName);
 		params.put("solrXmlDir", solrTempDirectory);
-		params.put("solrUrl", solrUrl);
+		params.put("solrUrl", internalSolrUrl);
 		params.put("solrImportCore", "pu");
 		params.put("pageOffset", "" + pdfToRealPageOffset);
 		

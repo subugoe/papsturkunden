@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema name="pu" version="1.5">
 
-  <uniqueKey>idno</uniqueKey>
+  <uniqueKey>id</uniqueKey>
 
   <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="false"
       indexed="true"
@@ -32,34 +32,17 @@
     </analyzer>
   </fieldType>
 
-  <field name="idno" type="string" required="true" />
-  <field name="bd" type="string" />
+  <field name="id" type="int" required="true" />
   
-  <field name="date_sort" type="text_de" />
-  <field name="date_sort_value" type="text_de" />
-  <field name="pont_bd" type="text_de" />
-  <field name="pont_no" type="text_de" />
-  <field name="supplier" type="text_de" />
-  <field name="date_table" type="text_de" />
-  <field name="initium" type="text_de" />
-  <field name="recepit_inst" type="text_de" />
-  <field name="diocese" type="text_de" />
-  <field name="jaffe2" type="text_de" />
-  <field name="doc_regest" type="text_de" />
-  <field name="doc_regest_name" type="text_de" />
-
   <field name="page" type="int" />
-  <field name="page_pdf" type="int" />
-  <field name="num" type="int" />
-  <field name="orig_text" type="text_de" multiValued="true" />
-  <field name="part1" type="text_de" />
-  <field name="part2" type="text_de" multiValued="true" />
-  <field name="part3" type="text_de" multiValued="true" />
-  <field name="part4" type="text_de" multiValued="true" />
+  <field name="line" type="text_de" />
+  <field name="line_spaceless" type="string" />
+  <field name="next_line" type="string" />
+  
 
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />
   <!-- enable nested documents -->
-  <field name="_root_" type="string" indexed="true" stored="false" />
+  <field name="_root_" type="int" indexed="true" stored="false" />
 
 </schema>
