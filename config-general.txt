@@ -1,3 +1,13 @@
+## Properties to change
+
+resultsSolrUrl: http://localhost:8995/solr
+#resultsSolrUrl: http://xxxx.sub.uni-goettingen.de/solr
+output_solrXmlDirectory: /home/dennis/papsturkunden_solrxml
+
+
+## Properties that should stay fixed
+
+# the main directory is defined for each book in its own config file
 inputSubDirectory: inputs
 input_book: book.txt
 input_tableOfContents: TOC.csv
@@ -11,6 +21,3 @@ internalSolrUrl: http://localhost:8983/solr
 # outputs go into the main directory
 output_xml: result.xml
 output_searchResults: search-results.txt
-
-resultsSolrUrl: http://localhost:8995/solr
-output_solrXmlDirectory: /home/dennis/papsturkunden_solrxml

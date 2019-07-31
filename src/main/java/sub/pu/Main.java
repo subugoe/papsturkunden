@@ -1,14 +1,11 @@
 package sub.pu;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -19,52 +16,31 @@ import sub.pu.importing.ImporterStepConvert;
 
 public class Main {
 
-	private File mainDirectory;
-	private String pdfFileName;
-	private String bookShortName;
-	private File inputDirectory;
-	private String input_bookFileName;
-	private File input_tableOfContents;
-	private File input_chapters;
-	private File input_jaffe;
-	private File input_endMilestones;
-	private File output_xml;
-	private File output_solrxml;
-	private File output_searchResults;
-	private String internalSolrUrl;
-	private String internalSolrTempDirectory;
-	private String resultsSolrUrl;
-	private File resultsSolrTempDirectory;
-	private int pdfToRealPageOffset;
-	
-	boolean oneBookMode = false;
+	private PropertiesManager p = new PropertiesManager();
 	
 	public static void main(String[] args) throws Exception {
 		new Main().execute(args);
 	}
 	
 	private void execute(String[] args) throws Exception {
-		if (args.length == 0) {
-			oneBookMode = true;
-		}
 		
-		initAllProperties(args);
+		p.initAllProperties(args);
 
-		String tocCsvFile = FileUtils.readFileToString(input_tableOfContents, "UTF8");
+		String tocCsvFile = FileUtils.readFileToString(p.input_tableOfContents, "UTF8");
 		String[] tocLines = tocCsvFile.split("\\n");
-		initPageOffset(tocLines[0]);
+		p.initPageOffset(tocLines[0]);
 		importIntoInternalSolr();
 				
-		PrintWriter writer = new PrintWriter(new FileWriter(output_searchResults));
-		PrintWriter writerForXml = new PrintWriter(new FileWriter(output_xml));
-		PrintWriter writerForSolrXml = new PrintWriter(new FileWriter(output_solrxml));
-		String endMilestonesFile = FileUtils.readFileToString(input_endMilestones, "UTF8");
+		PrintWriter writer = new PrintWriter(new FileWriter(p.output_searchResults));
+		PrintWriter writerForXml = new PrintWriter(new FileWriter(p.output_xml));
+		PrintWriter writerForSolrXml = new PrintWriter(new FileWriter(p.output_solrxml));
+		String endMilestonesFile = FileUtils.readFileToString(p.input_endMilestones, "UTF8");
 		String[] endLines = endMilestonesFile.split("\\n");
 		
-		String chapterFile = FileUtils.readFileToString(input_chapters, "UTF8");
+		String chapterFile = FileUtils.readFileToString(p.input_chapters, "UTF8");
 		String[] chapterLines = chapterFile.split("\\n");
 		
-		String jaffeFile = FileUtils.readFileToString(input_jaffe, "UTF8");
+		String jaffeFile = FileUtils.readFileToString(p.input_jaffe, "UTF8");
 		String[] jaffeLines = jaffeFile.split("\\n");
 		
 		RegestExtractor extractor = new RegestExtractor();
@@ -73,7 +49,7 @@ public class Main {
 		RegestEnricher enricher = new RegestEnricher();
 		enricher.addChapters(regests, chapterLines);
 		enricher.addJaffes(regests, jaffeLines);
-		enricher.addMetadata(regests, pdfFileName, bookShortName, pdfToRealPageOffset);
+		enricher.addMetadata(regests, p.pdfFileName, p.bookShortName, p.pdfToRealPageOffset);
 		
 		XmlRegestWriter regestWriter = new XmlRegestWriter();
 		regestWriter.write(regests, writerForXml);
@@ -125,67 +101,32 @@ public class Main {
 //		System.out.println(whitespaces);
 		writer.close();
 		
-		if (oneBookMode) {
+		if (p.oneBookMode) {
 			importIntoResultsSolr();
 		}
 	}
 
-	private void initAllProperties(String[] args) throws Exception {
-		Properties bookSpecificProps = new Properties();
-		if (oneBookMode) {
-			bookSpecificProps.load(new FileInputStream("config-one-book.txt"));
-		} else {
-			bookSpecificProps.load(new FileInputStream(args[0]));
-		}
-		mainDirectory = new File((String) bookSpecificProps.get("mainDirectory"));
-		pdfFileName = (String) bookSpecificProps.get("pdfFileName");
-		bookShortName = (String) bookSpecificProps.get("bookShortName");
-		
-		Properties generalProps = new Properties();
-		generalProps.load(new FileInputStream("config-general.txt"));
-		inputDirectory = new File(mainDirectory, (String) generalProps.get("inputSubDirectory"));
-		input_bookFileName = (String) generalProps.get("input_book");
-		input_tableOfContents = new File(inputDirectory, (String) generalProps.get("input_tableOfContents"));
-		input_chapters = new File(inputDirectory, (String) generalProps.get("input_chapters"));
-		input_jaffe = new File(inputDirectory, (String) generalProps.get("input_jaffe"));
-		input_endMilestones = new File(inputDirectory, (String) generalProps.get("input_endMilestones"));
-		
-		resultsSolrUrl = (String) generalProps.get("resultsSolrUrl");
-		resultsSolrTempDirectory = new File((String) generalProps.get("output_solrXmlDirectory"));
-		output_solrxml = new File(resultsSolrTempDirectory, bookShortName + "_solr.xml");
-		
-		output_xml = new File(mainDirectory, (String) generalProps.get("output_xml"));
-		output_searchResults = new File(mainDirectory, (String) generalProps.get("output_searchResults"));
-		internalSolrUrl = (String) generalProps.get("internalSolrUrl");
-		internalSolrTempDirectory = new File(mainDirectory, "solrxml").getAbsolutePath();
-	}
-
-	private void initPageOffset(String firstTocLine) {
-		String lastField = firstTocLine.substring(firstTocLine.lastIndexOf(",") + 1);
-		pdfToRealPageOffset = Integer.parseInt(lastField);
-	}
-
 	private void importIntoInternalSolr() throws Exception {
 		Map<String, String> params = new HashMap<>();
-		params.put("gitDir", inputDirectory.getAbsolutePath());
-		params.put("bookFileName", input_bookFileName);
-		params.put("solrXmlDir", internalSolrTempDirectory);
-		params.put("solrUrl", internalSolrUrl);
+		params.put("gitDir", p.inputDirectory.getAbsolutePath());
+		params.put("bookFileName", p.input_bookFileName);
+		params.put("solrXmlDir", p.internalSolrTempDirectory);
+		params.put("solrUrl", p.internalSolrUrl);
 		params.put("solrImportCore", "pu");
-		params.put("pageOffset", "" + pdfToRealPageOffset);
-		System.out.println("    Importing into internal Solr (" + internalSolrUrl + ")");
+		params.put("pageOffset", "" + p.pdfToRealPageOffset);
+		System.out.println("    Importing into internal Solr (" + p.internalSolrUrl + ")");
 		new ImporterStepConvert().execute(params);
 		new ImporterStepUpload().execute(params);
 	}
 
 	private void importIntoResultsSolr() throws Exception {
 		Map<String, String> params = new HashMap<>();
-		params.put("solrXmlDir", resultsSolrTempDirectory.getAbsolutePath());
-		params.put("solrUrl", resultsSolrUrl);
+		params.put("solrXmlDir", p.resultsSolrTempDirectory.getAbsolutePath());
+		params.put("solrUrl", p.resultsSolrUrl);
 		params.put("solrImportCore", "pu");
 		
 		System.out.println();
-		System.out.println("    Importing into Solr with results (" + resultsSolrUrl + ")");
+		System.out.println("    Importing into Solr with results (" + p.resultsSolrUrl + ")");
 		new ImporterStepUpload().execute(params);
 	}
 
