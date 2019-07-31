@@ -1,6 +1,5 @@
 package sub.pu;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sub.pu.data.Regest;

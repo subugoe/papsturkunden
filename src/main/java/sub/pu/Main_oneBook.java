@@ -14,15 +14,15 @@ import sub.ent.api.ImporterStepUpload;
 import sub.pu.data.Regest;
 import sub.pu.internalsolr.ImporterStepConvert;
 
-public class Main {
+public class Main_oneBook {
 
 	private PropertiesManager p = new PropertiesManager();
 	
 	public static void main(String[] args) throws Exception {
-		new Main().execute(args);
+		new Main_oneBook().execute(args);
 	}
 	
-	private void execute(String[] args) throws Exception {
+	void execute(String[] args) throws Exception {
 		
 		p.initAllProperties(args);
 
@@ -102,7 +102,7 @@ public class Main {
 		writer.close();
 		
 		if (p.oneBookMode) {
-			importIntoResultsSolr();
+			importCompleteFolderIntoResultsSolr();
 		}
 	}
 
@@ -119,14 +119,14 @@ public class Main {
 		new ImporterStepUpload().execute(params);
 	}
 
-	private void importIntoResultsSolr() throws Exception {
+	void importCompleteFolderIntoResultsSolr() throws Exception {
 		Map<String, String> params = new HashMap<>();
 		params.put("solrXmlDir", p.resultsSolrTempDirectory.getAbsolutePath());
 		params.put("solrUrl", p.resultsSolrUrl);
 		params.put("solrImportCore", "pu");
 		
 		System.out.println();
-		System.out.println("    Importing into Solr with results (" + p.resultsSolrUrl + ")");
+		System.out.println("    ### Importing results into Solr (" + p.resultsSolrUrl + ") ###");
 		new ImporterStepUpload().execute(params);
 	}
 
