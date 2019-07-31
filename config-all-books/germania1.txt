@@ -1,0 +1,3 @@
+mainDirectory: /home/dennis/papsturkunden_germania1
+pdfFileName: Germania Pontificia I (nur OCR).pdf
+bookShortName: Germ. Pont. I
