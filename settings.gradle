@@ -1,5 +1,4 @@
-include 'pu-plugin', 'solr-importer:web', 'solr-importer:core'
+include 'solr-importer:web', 'solr-importer:core'
 
-project(":pu-plugin").buildFileName = "pu-plugin.gradle"
 project(":solr-importer:web").buildFileName = "web.gradle"
 project(":solr-importer:core").buildFileName = "core.gradle"

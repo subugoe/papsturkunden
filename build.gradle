@@ -10,6 +10,7 @@ allprojects {
 		}
 	}
 	apply plugin: 'java'
+	sourceCompatibility = 1.8
 
 	defaultTasks "clean", "build"
 	dependencies {
@@ -23,12 +24,6 @@ allprojects {
 }
 
 dependencies {
-	compile project(':pu-plugin')
 	compile project(':solr-importer:core')
 }
 
-project(':solr-importer:web') {
-	dependencies {
-		runtime project(':pu-plugin')
-	}
-}

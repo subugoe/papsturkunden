@@ -1,4 +1,4 @@
-package sub.pu.importing;
+package sub.pu.internalsolr;
 
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import sub.pu.internalsolr.TextToSolrTransformer;
 
 public class TextToSolrTransformerTest {
 

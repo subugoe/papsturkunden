@@ -1,4 +1,4 @@
-package sub.pu.importing;
+package sub.pu.internalsolr;
 
 import java.io.File;
 import java.io.OutputStream;

@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 import sub.ent.api.ImporterStepUpload;
 import sub.pu.data.Regest;
-import sub.pu.importing.ImporterStepConvert;
+import sub.pu.internalsolr.ImporterStepConvert;
 
 public class Main {
 
