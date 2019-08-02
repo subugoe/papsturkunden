@@ -14,12 +14,12 @@ import sub.ent.api.ImporterStepUpload;
 import sub.pu.data.Regest;
 import sub.pu.internalsolr.ImporterStepConvert;
 
-public class Main_oneBook {
+public class MainOneBook {
 
 	private PropertiesManager p = new PropertiesManager();
 	
 	public static void main(String[] args) throws Exception {
-		new Main_oneBook().execute(args);
+		new MainOneBook().execute(args);
 	}
 	
 	void execute(String[] args) throws Exception {
