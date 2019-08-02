@@ -54,6 +54,8 @@
   <field name="orig_text" type="text_de" multiValued="true" />
   <field name="part1" type="text_de" />
   <field name="part2" type="text_de" multiValued="true" />
+  <field name="part2a_regest" type="text_de" />
+  <field name="part2b_angaben" type="text_de" />
   <field name="part3" type="text_de" multiValued="true" />
   <field name="part4" type="text_de" multiValued="true" />
 

@@ -12,47 +12,55 @@ public class RegestSplitterTest {
 
 	private RegestSplitter splitter = new RegestSplitter();
 	
-	private List<String> regestLines(boolean hasRecord, boolean hasComment) {
-		List<String> lines = new ArrayList<>();
-		lines.add("1                                                                     746 iul. 1");
-		lines.add("Z a c h a r i a s Bonifatio");
-		lines.add("viros apud");
-		if (hasRecord) {
-			lines.add("      Laud. in");
-			lines.add("Reg.");
-		}
-		if (hasComment) {
-			lines.add("            v. Mainz,");
-			lines.add("      bücher");
-		}
-		return lines;
-	}
-
 	@Before
 	public void setUp() throws Exception {
 	}
 
 	@Test
-	public void withoutWrittenRecord() {
-		String mainPart = splitter.cutOutMainPart(regestLines(false, true));
-		assertEquals("Zacharias Bonifatio\nviros apud\n", mainPart);
+	public void getsEmptyPart2b() {
+		String mainPart = splitter.get2bInfoForWriting(regestWithoutPart2b());
+		assertEquals("", mainPart);
+	}
 
-		String writtenRecord = splitter.cutOutWrittenRecord(regestLines(false, true));
+	@Test
+	public void getsPart2b() {
+		String mainPart = splitter.get2bInfoForWriting(standardRegest(true, true));
+		assertEquals("— Ne mireris.", mainPart);
+	}
+
+	@Test
+	public void getsCoreRegestWithoutPart2b() {
+		String mainPart = splitter.get2aCoreRegest(regestWithoutPart2b());
+		assertEquals("Zacharias Bonifatio viros.", mainPart);
+	}
+
+	@Test
+	public void getsCoreRegest() {
+		String mainPart = splitter.get2aCoreRegest(standardRegest(true, true));
+		assertEquals("Zacharias Bonifatio viros. — apud.", mainPart);
+	}
+
+	@Test
+	public void withoutWrittenRecord() {
+		String mainPart = splitter.cutOutMainPart(standardRegest(false, true));
+		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris.\n", mainPart);
+
+		String writtenRecord = splitter.cutOutWrittenRecord(standardRegest(false, true));
 		assertEquals("", writtenRecord);
 		
-		String comment = splitter.cutOutComment(regestLines(false, true));
+		String comment = splitter.cutOutComment(standardRegest(false, true));
 		assertEquals("v. Mainz,\nbücher\n", comment);
 	}
 
 	@Test
 	public void allParts() {
-		String mainPart = splitter.cutOutMainPart(regestLines(true, true));
-		assertEquals("Zacharias Bonifatio\nviros apud\n", mainPart);
+		String mainPart = splitter.cutOutMainPart(standardRegest(true, true));
+		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris.\n", mainPart);
 		
-		String writtenRecord = splitter.cutOutWrittenRecord(regestLines(true, true));
+		String writtenRecord = splitter.cutOutWrittenRecord(standardRegest(true, true));
 		assertEquals("Laud. in\nReg.\n", writtenRecord);
 		
-		String comment = splitter.cutOutComment(regestLines(true, true));
+		String comment = splitter.cutOutComment(standardRegest(true, true));
 		assertEquals("v. Mainz,\nbücher\n", comment);
 	}
 
@@ -98,4 +106,28 @@ public class RegestSplitterTest {
 		assertEquals("[Arno archiep.]", result);
 	}
 	
+	private List<String> standardRegest(boolean hasRecord, boolean hasComment) {
+		List<String> lines = new ArrayList<>();
+		lines.add("1                                                                     746 iul. 1");
+		lines.add("Z a c h a r i a s Bonifatio");
+		lines.add("viros. — apud. — Ne mireris.");
+		if (hasRecord) {
+			lines.add("      Laud. in");
+			lines.add("Reg.");
+		}
+		if (hasComment) {
+			lines.add("            v. Mainz,");
+			lines.add("      bücher");
+		}
+		return lines;
+	}
+
+	private List<String> regestWithoutPart2b() {
+		List<String> lines = new ArrayList<>();
+		lines.add("1                                                                     746 iul. 1");
+		lines.add("Z a c h a r i a s Bonifatio");
+		lines.add("viros.");
+		return lines;
+	}
+
 }

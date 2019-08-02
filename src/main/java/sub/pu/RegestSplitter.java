@@ -98,6 +98,21 @@ public class RegestSplitter {
 		return leadingSpaces >= spacesFrom && leadingSpaces <= spacesTo;
 	}
 	
+	public String get2aCoreRegest(List<String> regestLines) {
+		String mainPart = cutOutMainPart(regestLines).replace("\n", " ");
+		String coreRegest = Regex.extractFirst("^(.*\\.) —", mainPart);
+		if ("".equals(coreRegest))
+			return mainPart.trim();
+		
+		return coreRegest;
+	}
+	
+	public String get2bInfoForWriting(List<String> regestLines) {
+		String mainPart = cutOutMainPart(regestLines).replace("\n", " ");
+		String coreRegest = get2aCoreRegest(regestLines);
+		return mainPart.replace(coreRegest, "").trim();
+	}
+	
 	public String getPlaceAndDate(Regest regest) {
 		String header = cutOutHeader(regest.textLines);
 		int firstWhitespace = header.indexOf(" ");

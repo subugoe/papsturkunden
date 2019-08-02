@@ -49,6 +49,8 @@ public class SolrXmlRegestWriter {
 			for (String mainPartLine : mainPart) {
 				out.println("<field name='part2'><![CDATA[" + mainPartLine + "]]></field>");
 			}
+			out.println("<field name='part2a_regest'><![CDATA[" + splitter.get2aCoreRegest(regest.textLines) + "]]></field>");
+			out.println("<field name='part2b_angaben'><![CDATA[" + splitter.get2bInfoForWriting(regest.textLines) + "]]></field>");
 			String[] writtenRecord = splitter.cutOutWrittenRecord(regest.textLines).split("\n");
 			for (String writtenRecordLine : writtenRecord) {
 				out.println("<field name='part3'><![CDATA[" + writtenRecordLine + "]]></field>");
