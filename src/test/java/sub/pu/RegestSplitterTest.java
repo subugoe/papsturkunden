@@ -17,6 +17,24 @@ public class RegestSplitterTest {
 	}
 
 	@Test
+	public void getsPart2b1initium() {
+		String mainPart = splitter.get2b1initium(standardRegest(true, true));
+		assertEquals("Ne mireris", mainPart);
+	}
+
+	@Test
+	public void getsPart2b2() {
+		String mainPart = splitter.get2b2subscriptions(standardRegest(true, true));
+		assertEquals("Ego bla.", mainPart);
+	}
+
+	@Test
+	public void getsPart2b3() {
+		String mainPart = splitter.get2b3originalDating(standardRegest(true, true));
+		assertEquals("Scr. p. m. blub.", mainPart);
+	}
+
+	@Test
 	public void getsEmptyPart2b() {
 		String mainPart = splitter.get2bInfoForWriting(regestWithoutPart2b());
 		assertEquals("", mainPart);
@@ -25,7 +43,7 @@ public class RegestSplitterTest {
 	@Test
 	public void getsPart2b() {
 		String mainPart = splitter.get2bInfoForWriting(standardRegest(true, true));
-		assertEquals("— Ne mireris.", mainPart);
+		assertEquals("— Ne mireris. Ego bla. Scr. p. m. blub.", mainPart);
 	}
 
 	@Test
@@ -43,7 +61,7 @@ public class RegestSplitterTest {
 	@Test
 	public void withoutWrittenRecord() {
 		String mainPart = splitter.cutOutMainPart(standardRegest(false, true));
-		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris.\n", mainPart);
+		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris. Ego bla. Scr. p. m. blub.\n", mainPart);
 
 		String writtenRecord = splitter.cutOutWrittenRecord(standardRegest(false, true));
 		assertEquals("", writtenRecord);
@@ -55,7 +73,7 @@ public class RegestSplitterTest {
 	@Test
 	public void allParts() {
 		String mainPart = splitter.cutOutMainPart(standardRegest(true, true));
-		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris.\n", mainPart);
+		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris. Ego bla. Scr. p. m. blub.\n", mainPart);
 		
 		String writtenRecord = splitter.cutOutWrittenRecord(standardRegest(true, true));
 		assertEquals("Laud. in\nReg.\n", writtenRecord);
@@ -110,7 +128,7 @@ public class RegestSplitterTest {
 		List<String> lines = new ArrayList<>();
 		lines.add("1                                                                     746 iul. 1");
 		lines.add("Z a c h a r i a s Bonifatio");
-		lines.add("viros. — apud. — Ne mireris.");
+		lines.add("viros. — apud. — Ne mireris. Ego bla. Scr. p. m. blub.");
 		if (hasRecord) {
 			lines.add("      Laud. in");
 			lines.add("Reg.");

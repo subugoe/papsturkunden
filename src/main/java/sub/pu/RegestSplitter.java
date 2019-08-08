@@ -113,24 +113,55 @@ public class RegestSplitter {
 		return mainPart.replace(coreRegest, "").trim();
 	}
 	
+	public String get2b3originalDating(List<String> regestLines) {
+		String infoForWriting = get2bInfoForWriting(regestLines);
+		int i1 = infoForWriting.indexOf("Dat.");
+		int i2 = infoForWriting.indexOf("Scr. p. m.");
+		String originalDating = "";
+		if (i1 == -1 && i2 == -1) {
+			return "";
+		} else if (i1 != -1) {
+			originalDating = infoForWriting.substring(i1);
+		} else if (i2 != -1) {
+			originalDating =  infoForWriting.substring(i2);
+		} else {
+			originalDating =  infoForWriting.substring(Math.min(i1, i2));
+		}
+		return originalDating.trim();
+	}
+	
+	public String get2b2subscriptions(List<String> regestLines) {
+		String infoForWriting = get2bInfoForWriting(regestLines);
+		String originalDating = get2b3originalDating(regestLines);
+		String withoutDating = infoForWriting.replace(originalDating, "");
+		int i1 = withoutDating.indexOf("Ego");
+		int i2 = withoutDating.indexOf("Subscr.");
+		String subscriptions = "";
+		if (i1 == -1 && i2 == -1) {
+			return "";
+		} else if (i1 != -1) {
+			subscriptions = withoutDating.substring(i1);
+		} else if (i2 != -1) {
+			subscriptions =  withoutDating.substring(i2);
+		} else {
+			subscriptions =  withoutDating.substring(Math.min(i1, i2));
+		}
+		return subscriptions.trim();
+	}
+	
+	public String get2b1initium(List<String> regestLines) {
+		String infoForWriting = get2bInfoForWriting(regestLines);
+		String originalDating = get2b3originalDating(regestLines);
+		String subscriptions = get2b2subscriptions(regestLines);
+		String withoutTail = infoForWriting.replace(originalDating, "").replace(subscriptions, "");
+		return Regex.extractFirst("—([^\\.]+)\\.", withoutTail).trim();
+	}
+	
 	public String getPlaceAndDate(Regest regest) {
 		String header = cutOutHeader(regest.textLines);
 		int firstWhitespace = header.indexOf(" ");
 		if (firstWhitespace > 0) {
 			return header.substring(firstWhitespace).replace("<", " ").trim();
-		} else {
-			return "";
-		}
-	}
-
-	public String getInitium(Regest regest) {
-		String oneLineRegest = "";
-		for (int i = 1; i < regest.textLines.size(); i++) {
-			oneLineRegest += regest.textLines.get(i) + " ";
-		}
-		String possibleInitium = Regex.extractFirst(" —([^\\.]+).", oneLineRegest).trim();
-		if (possibleInitium.length() > 4) {
-			return possibleInitium;
 		} else {
 			return "";
 		}

@@ -32,7 +32,7 @@ public class SolrXmlRegestWriter {
 			out.println("<field name='pont_no'>" + regest.page + " n. " + regest.number.replaceAll("[†*]", "") + "</field>");
 			out.println("<field name='supplier'><![CDATA[" + splitter.getPopeAndSupplier(regest) + "]]></field>");
 			out.println("<field name='date_table'><![CDATA[" + splitter.getPlaceAndDate(regest) + "]]></field>");
-			out.println("<field name='initium'><![CDATA[" + splitter.getInitium(regest) + "]]></field>");
+			out.println("<field name='initium'><![CDATA[" + splitter.get2b1initium(regest.textLines) + "]]></field>");
 			out.println("<field name='recepit_inst'>" + regest.subchapter + "</field>");
 			out.println("<field name='diocese'>" + regest.chapter + "</field>");
 			out.println("<field name='jaffe2'>" + regest.jaffe + "</field>");
@@ -51,6 +51,9 @@ public class SolrXmlRegestWriter {
 			}
 			out.println("<field name='part2a_regest'><![CDATA[" + splitter.get2aCoreRegest(regest.textLines) + "]]></field>");
 			out.println("<field name='part2b_angaben'><![CDATA[" + splitter.get2bInfoForWriting(regest.textLines) + "]]></field>");
+			out.println("<field name='part2b1_initium'><![CDATA[" + splitter.get2b1initium(regest.textLines) + "]]></field>");
+			out.println("<field name='part2b2_unterschriften'><![CDATA[" + splitter.get2b2subscriptions(regest.textLines) + "]]></field>");
+			out.println("<field name='part2b3_datierung'><![CDATA[" + splitter.get2b3originalDating(regest.textLines) + "]]></field>");
 			String[] writtenRecord = splitter.cutOutWrittenRecord(regest.textLines).split("\n");
 			for (String writtenRecordLine : writtenRecord) {
 				out.println("<field name='part3'><![CDATA[" + writtenRecordLine + "]]></field>");

@@ -56,6 +56,9 @@
   <field name="part2" type="text_de" multiValued="true" />
   <field name="part2a_regest" type="text_de" />
   <field name="part2b_angaben" type="text_de" />
+  <field name="part2b1_initium" type="text_de" />
+  <field name="part2b2_unterschriften" type="text_de" />
+  <field name="part2b3_datierung" type="text_de" />
   <field name="part3" type="text_de" multiValued="true" />
   <field name="part4" type="text_de" multiValued="true" />
 

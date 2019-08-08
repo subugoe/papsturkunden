@@ -29,7 +29,7 @@ public class XmlRegestWriter {
 			out.println("  <supplier>" + splitter.getPopeAndSupplier(regest) + "</supplier>");
 			//out.println("  <!--HEADER: " + regest.textLines.get(0).trim() + "-->");
 			out.println("  <date_table>" + splitter.getPlaceAndDate(regest) + "</date_table>");
-			out.println("  <initium>" + splitter.getInitium(regest) + "</initium>");
+			out.println("  <initium>" + splitter.get2b1initium(regest.textLines) + "</initium>");
 			out.println("  <recepit_inst>" + regest.subchapter + "</recepit_inst>");
 			out.println("  <diocese>" + regest.chapter + "</diocese>");
 			out.println("  <jaffe2>" + regest.jaffe +"</jaffe2>");
