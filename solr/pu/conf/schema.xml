@@ -60,6 +60,10 @@
   <field name="part2b2_unterschriften" type="text_de" />
   <field name="part2b3_datierung" type="text_de" />
   <field name="part3" type="text_de" multiValued="true" />
+  <field name="part3a_handschriften" type="text_de" />
+  <field name="part3b_editionen" type="text_de" />
+  <field name="part3c_regesten" type="text_de" />
+  <field name="part3c2_jaffe" type="text_de" />
   <field name="part4" type="text_de" multiValued="true" />
 
   <!-- transaction log -->

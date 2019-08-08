@@ -17,6 +17,30 @@ public class RegestSplitterTest {
 	}
 
 	@Test
+	public void getsPart3aHandWritings() {
+		String mainPart = splitter.get3aHandWritings(standardRegest(true, true));
+		assertEquals("Handschrift.", mainPart);
+	}
+
+	@Test
+	public void getsPart3bEditions() {
+		String mainPart = splitter.get3bEditions(standardRegest(true, true));
+		assertEquals("Ed. bla.", mainPart);
+	}
+
+	@Test
+	public void getsPart3c2_jaffe() {
+		String mainPart = splitter.get3c2jaffe(standardRegest(true, true));
+		assertEquals("JL. —.", mainPart);
+	}
+
+	@Test
+	public void getsPart3cRegests() {
+		String mainPart = splitter.get3cRegests(standardRegest(true, true));
+		assertEquals("Regg. blub. JL. —.", mainPart);
+	}
+
+	@Test
 	public void getsPart2b1initium() {
 		String mainPart = splitter.get2b1initium(standardRegest(true, true));
 		assertEquals("Ne mireris", mainPart);
@@ -76,7 +100,7 @@ public class RegestSplitterTest {
 		assertEquals("Zacharias Bonifatio\nviros. — apud. — Ne mireris. Ego bla. Scr. p. m. blub.\n", mainPart);
 		
 		String writtenRecord = splitter.cutOutWrittenRecord(standardRegest(true, true));
-		assertEquals("Laud. in\nReg.\n", writtenRecord);
+		assertEquals("Handschrift. — Ed. bla.\n— Regg. blub. JL. —.\n", writtenRecord);
 		
 		String comment = splitter.cutOutComment(standardRegest(true, true));
 		assertEquals("v. Mainz,\nbücher\n", comment);
@@ -130,8 +154,8 @@ public class RegestSplitterTest {
 		lines.add("Z a c h a r i a s Bonifatio");
 		lines.add("viros. — apud. — Ne mireris. Ego bla. Scr. p. m. blub.");
 		if (hasRecord) {
-			lines.add("      Laud. in");
-			lines.add("Reg.");
+			lines.add("      Handschrift. — Ed. bla.");
+			lines.add("— Regg. blub. JL. —.");
 		}
 		if (hasComment) {
 			lines.add("            v. Mainz,");

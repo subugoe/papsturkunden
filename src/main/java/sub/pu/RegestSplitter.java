@@ -115,38 +115,29 @@ public class RegestSplitter {
 	
 	public String get2b3originalDating(List<String> regestLines) {
 		String infoForWriting = get2bInfoForWriting(regestLines);
-		int i1 = infoForWriting.indexOf("Dat.");
-		int i2 = infoForWriting.indexOf("Scr. p. m.");
-		String originalDating = "";
+		return getTail(infoForWriting, "Dat.", "Scr. p. m.").trim();
+	}
+	
+	private String getTail(String s, String beginning, String alternativeBegining) {
+		int i1 = s.indexOf(beginning);
+		int i2 = s.indexOf(alternativeBegining);
+		String tail = "";
 		if (i1 == -1 && i2 == -1) {
 			return "";
 		} else if (i1 != -1) {
-			originalDating = infoForWriting.substring(i1);
+			tail = s.substring(i1);
 		} else if (i2 != -1) {
-			originalDating =  infoForWriting.substring(i2);
+			tail = s.substring(i2);
 		} else {
-			originalDating =  infoForWriting.substring(Math.min(i1, i2));
+			tail = s.substring(Math.min(i1, i2));
 		}
-		return originalDating.trim();
+		return tail;
 	}
 	
 	public String get2b2subscriptions(List<String> regestLines) {
 		String infoForWriting = get2bInfoForWriting(regestLines);
 		String originalDating = get2b3originalDating(regestLines);
-		String withoutDating = infoForWriting.replace(originalDating, "");
-		int i1 = withoutDating.indexOf("Ego");
-		int i2 = withoutDating.indexOf("Subscr.");
-		String subscriptions = "";
-		if (i1 == -1 && i2 == -1) {
-			return "";
-		} else if (i1 != -1) {
-			subscriptions = withoutDating.substring(i1);
-		} else if (i2 != -1) {
-			subscriptions =  withoutDating.substring(i2);
-		} else {
-			subscriptions =  withoutDating.substring(Math.min(i1, i2));
-		}
-		return subscriptions.trim();
+		return getTail(infoForWriting, "Ego", "Subscr.").replace(originalDating, "").trim();
 	}
 	
 	public String get2b1initium(List<String> regestLines) {
@@ -155,6 +146,45 @@ public class RegestSplitter {
 		String subscriptions = get2b2subscriptions(regestLines);
 		String withoutTail = infoForWriting.replace(originalDating, "").replace(subscriptions, "");
 		return Regex.extractFirst("—([^\\.]+)\\.", withoutTail).trim();
+	}
+	
+	public String get3cRegests(List<String> regestLines) {
+		String writtenRecord = cutOutWrittenRecord(regestLines).replace("\n", " ");
+		return getTail(writtenRecord, "Reg.", "Regg.").trim();
+	}
+	
+	public String get3c2jaffe(List<String> regestLines) {
+		String regests = get3cRegests(regestLines);
+		String possibleJaffe = getTail(regests, "JL.", "JE.");
+		if (!possibleJaffe.isEmpty()) {
+			return possibleJaffe;
+		} else {
+			return getTail(regests, "JL.", "JK.");
+		}
+	}
+	
+	public String get3bEditions(List<String> regestLines) {
+		String writtenRecord = cutOutWrittenRecord(regestLines).replace("\n", " ");
+		String regests = get3cRegests(regestLines);
+		String editions = getTail(writtenRecord, "Ed.", "Edd.").replace(regests, "").trim();
+		if (editions.endsWith("—")) {
+			editions = editions.replaceFirst("—$", "");
+		}
+		return editions.trim();
+	}
+	
+	public String get3aHandWritings(List<String> regestLines) {
+		String writtenRecord = cutOutWrittenRecord(regestLines).replace("\n", " ");
+		String regests = get3cRegests(regestLines);
+		String editions = get3bEditions(regestLines);
+		String handWritings = writtenRecord.replace(regests, "").replace(editions, "").trim();
+		if (handWritings.startsWith("Laud")) {
+			return "";
+		} 
+		while (handWritings.endsWith("—")) {
+			handWritings = handWritings.replaceFirst("—$", "").trim();
+		}
+		return handWritings;
 	}
 	
 	public String getPlaceAndDate(Regest regest) {
