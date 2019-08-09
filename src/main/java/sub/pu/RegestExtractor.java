@@ -85,6 +85,8 @@ public class RegestExtractor {
 	}
 	
 	private void processEndLine(String endLine) throws Exception {
+		if (endLine.isEmpty())
+			return;
 		String page = endLine.substring(0, endLine.indexOf(','));
 		String textLine = endLine.substring(endLine.indexOf(',') + 1);
 		
