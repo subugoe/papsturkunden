@@ -28,9 +28,9 @@ public class RegestEnricher {
 		
 		for (String line : chapterLines) {
 			String[] lineFields = line.split(";");
-			if (lineFields.length == 0 || lineFields.length == 2) { 
+			if (lineFields.length == 0 || line.equals(";Appendix;")) {
 				continue;
-			} else if (lineFields.length == 1) {
+			} else if (lineFields.length == 1 || lineFields.length == 2) {
 				chapterChanged = true;
 				changedChapter = lineFields[0];
 			} else if (lineFields.length == 3) {

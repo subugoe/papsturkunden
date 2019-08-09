@@ -13,13 +13,13 @@ import sub.pu.data.Regest;
 public class RegestEnricherTest {
 	
 	private RegestEnricher enricher = new RegestEnricher();
-	private String[] chapterLines = {"SALZBURG;;",
+	private String[] chapterLines = {"SALZBURG;1;",
 			";;",
 			";Archiepiscopatus;4",
 			";;",
 			";Ecclesia;11",
 			";;",
-			"GURK;;",
+			"GURK;13;",
 			";;",
 			";Gurcensis;15",
 			";;",
